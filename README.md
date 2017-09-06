@@ -1,9 +1,16 @@
 # Project Code Diva
-######(_Rarity_)
 
 ### Objective
 Not ready yet.
+
 ### Time Line
-Not ready yet.
+08 Sept :: Collect test code files.  
+08 Sept :: Evaluate whether Java is, in fact, feasible to do this in.   
+
+### Wish List
+* Back up the file before making any changes  
+(Make a copy and rename, then "let the Diva loose.")
+
 ### Table of Contents
 Not ready yet.
+
