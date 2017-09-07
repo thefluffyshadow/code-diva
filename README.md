@@ -4,18 +4,18 @@
 **Check the style of java code files.**
 
 **Common things required that the Diva check:**
-* optional curly braces are mandatory - if, else, & any loop
-    * block indentation - class body, method body, loop body, if/else, declarations (instance level)
-	* spaces around binary operators (just math operators (+ - * / %))
-	* brace alignment (religious thing)
-	* blank lines between methods and at end of file
-	* case checking: class name, method name, constants, variables, formal parameters
-		* constants should be all uppercase with underscores separating words
-		* variables should be first letter uppercase, the rest lowercase
+* Optional curly braces are mandatory - if, else, & any loop
+* Block indentation - class body, method body, loop body, if/else, declarations (instance level)
+* Spaces around math operators (+ - * / %)
+* Curly braces should be on their own line (religious thing)  
+* Blank lines between methods and at end of file
+* Case checking: class name, method name, constants, variables, formal parameters
+	* Constants should be all uppercase with underscores separating words
+	* Variables should be first letter uppercase, the rest lowercase
 
 **Additional things the Diva will check for:**
-* multiple lines of code on one line
-* maximum line length
+* Multiple lines of code on one line
+* Maximum line length
 
 ## Time Line
 * 08 Sept :: Collect test code files.  
@@ -40,6 +40,6 @@ No tabs should be used in test cases - use 3 spaces for indentation.
 
 **4 test cases to submit for classmates to use:**
 * 2 programs that will have one error type from each list  
-* other programs that will have at least 2 types of errors  
-* spaces around binary operators  
-* blank lines between methods and eof  
+* Other programs that will have at least 2 types of errors  
+* Spaces around binary operators  
+* Blank lines between methods and at EOF  
