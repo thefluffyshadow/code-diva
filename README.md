@@ -5,20 +5,20 @@
 _Does not need to rewrite the code - just needs to point it out in a snooty tone._
 
 **Common things required that the Diva check:**
-* optional curly braces are mandatory - if, else, & any loop
-* block indentation - class body, method body, loop body, if/else, declarations (instance level)
-* spaces around binary operators (just math operators (+ - * / %))
-* brace alignment (religious thing)
-* blank lines between methods and at end of file
-* case checking: class name, method name, constants, variables, formal parameters
-	* constants should be all uppercase with underscores separating words
-	* variables should be first letter uppercase, the rest lowercase  
+* Optional curly braces are mandatory - if, else, & any loop
+* Block indentation - class body, method body, loop body, if/else, declarations (instance level)
+* Spaces around binary operators (just math operators (+ - * / %))
+* Brace alignment (religious thing)
+* Blank lines between methods and at end of file
+* Case checking: class name, method name, constants, variables, formal parameters
+	* Constants should be all uppercase with underscores separating words
+	* Variables should be first letter uppercase, the rest lowercase  
 
-_One of these can be exempted_
+_One of these can be exempted._
 
 **Additional things the Diva will check for:**
-* multiple lines of code on one line
-* maximum line length
+* Multiple lines of code on one line
+* Maximum line length
 
 ## Time Line
 * 07 Sept :: Decide one thing I want to work on as a developer.
@@ -37,13 +37,16 @@ _One of these can be exempted_
 ## Table of Contents
 Not ready yet.
 
-## Notes:
-Programs must have one large comment at the top which outlines the errors in the
+## Notes on the Test Programs:
+Test programs must have one large comment at the top which outlines the errors in the
 code file. There should be no other comments.  
 All methods should have a visibility keyword (public, private, etc).  
 No tabs should be used in test cases - use 3 spaces for indentation.
-The program must have 3 test programs not my own for each error.  
-Pick 6 output reports to show Dr. Gurka to showcase the range of what the Diva can do.  
+The program must have 3 test programs not my own for each error.    
+
+Error types assigned to me:
+* Optional curly braces
+* Blank lines
 
 Total of 6 test cases to submit for classmates to use:
 * 2 programs that will have one error type from each list  
@@ -52,3 +55,7 @@ Total of 6 test cases to submit for classmates to use:
     * Will need to meet with that person to determine what I need to write for them.
 
 All test programs will be named "yourname_errortype".java as per guidelines that will be on the forums.
+
+## Other Notes:
+Pick 6 output of Hana's reports to show Dr. Gurka to showcase the range of what she can do.
+

@@ -1,27 +1,19 @@
-package tests;
 /*
-*  Programmer:	Zachary Champion
-*  Project:		This program is just a temporary one which I'm using in class in order to keep up with the questions the teacher is going over.
-*  Class:		CS 1050 008
+* Test for optional curly braces
+* Errors on lines:
+*    15, 16 - Checking with a nested for loop which has only one statement in it.
 */
 
+package tests;
 import java.util.*;
 import java.io.*;
 
 public class D2_Array
 {
 	public static void main(String[] args) throws Exception
-	{
-		double [][] C = new double [12][12];
-		
-		for (int y = 0; y < C.length; y++)
-		{
-			for (int x = 0; x < C[y].length; x++)
-			{
-				C[y][x] = x * y;
-				System.out.println("C(" + x + "," + y + ") = " + C[y][x]);
-			}
-		}
-		
+    {
+       for (int y = 0; y < 8; y++)
+          for (int x = 0; x < 8; x++)
+             System.out.println(x + " * " + y + " = " + x * y);
 	}
 }
