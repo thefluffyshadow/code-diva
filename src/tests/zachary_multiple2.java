@@ -11,7 +11,7 @@ package tests;
 
 public class zachary_multiple2
 {
-   public static void Main(String[] args)
+   public static void main(String[] args)
    {
       declare_method("Main");
 
