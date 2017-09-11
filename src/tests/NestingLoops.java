@@ -26,14 +26,16 @@ public class NestingLoops
 
       print_grid(Rows, Columns);
    }
-   private static void print_header(int columns) {
+   private static void print_header(int columns)
+   {
       for (int ColNum = 1; ColNum <= columns; ColNum++)
          System.out.print("\t" + ColNum);
 
       System.out.println();
    }
 
-   private static void print_grid(int rows, int columns) {
+   private static void print_grid(int rows, int columns)
+   {
       for (int Row = 1; Row <= rows; Row++)
       {
          System.out.print(Row + "\t");
@@ -42,6 +44,7 @@ public class NestingLoops
          {
             System.out.print(Row * Column + "\t");
          }
+
          System.out.println();
       }
    }
