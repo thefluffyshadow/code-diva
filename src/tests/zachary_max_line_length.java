@@ -1,5 +1,10 @@
 package tests;
 
+/*
+ * Errors on lines:
+ * 12 - Line is longer than 120 characters (it is 142 chars long).
+*/
+
 public class zachary_max_line_length
 {
    public static void main(String[] args)

@@ -1,5 +1,10 @@
 package tests;
 
+/*
+ * Errors on lines:
+ * 14 - multiple statements on one line of code.
+*/
+
 public class zachary_multi_lines
 {
    public static void main(String[] args)
