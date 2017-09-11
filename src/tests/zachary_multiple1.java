@@ -10,11 +10,12 @@ package tests;
 
 public class zachary_multiple1
 {
-   public static void Main(String[] args)
+   public static void main(String[] args)
    {
-      declare_method("Main");
+      declare_method("main");
 
       inc_i();
+      dec_i();
    }
    private static void dec_i()
    {
@@ -29,12 +30,12 @@ public class zachary_multiple1
    {
       declare_method("inc_i");
 
-      for (int i; i < 10; ++i)
+      for (int i = 0; i < 10; ++i)
       {
          System.out.println("i: " + i);
       }
    }  private static void declare_method(String method_name)
    {
-      System.out.println("...in method " + method_name)
+      System.out.println("...in method " + method_name);
    }
 }
