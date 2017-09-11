@@ -1,0 +1,17 @@
+package tests;
+
+public class zachary_multi_lines
+{
+   public static void main(String[] args)
+   {
+      for (int i = 0; i <= 8; i++)
+      {
+         System.out.println(i); i++; i--; i++;
+      }
+   }
+
+   private static void declare_method(String method_name)
+   {
+      System.out.println("...in method " + method_name);
+   }
+}
