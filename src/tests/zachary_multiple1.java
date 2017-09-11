@@ -21,7 +21,7 @@ public class zachary_multiple1
       declare_method("dec_i");
 
       int i = 10;
-      while (i > 0)
+      while (i >= 0)
          System.out.println("i: " + --i);
    }
 
