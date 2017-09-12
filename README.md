@@ -33,9 +33,11 @@ _One of these can be exempted._
 * Make the changes to the code.
     * Back up the file before making any changes  
     (Make a copy and rename, then "let the Diva loose.")
+* Code file validation - Make sure that the file passed to the Diva actually is a valid java file.
 
 ## Table of Contents
-Not ready yet.
+Pilot.java - the code that takes in arguments and spawns a Diva for each filename.  
+Diva.java  - the code that actually checks the code of the files passed in.
 
 ## Notes on the Test Programs:
 Test programs must have one large comment at the top which outlines the errors in the
@@ -57,5 +59,5 @@ Total of 6 test cases to submit for classmates to use:
 All test programs will be named "yourname_errortype".java as per guidelines that will be on the forums.
 
 ## Other Notes:
-Pick 6 output of Hana's reports to show Dr. Gurka to showcase the range of what she can do.
+Pick 6 output of Diva's reports to show Dr. Gurka to showcase the range of what she can do.
 
