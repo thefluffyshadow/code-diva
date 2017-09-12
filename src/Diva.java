@@ -6,11 +6,12 @@
 
 public class Diva
 {
-   private static boolean Tracer = true;
+   public int num_errors;
+   public String file_contents;
+   public String diva_report;
 
-   public static int Constructor(String filename, boolean Tracer)
+   Diva (String filename, boolean Tracer)
    {
-      // Or is it like this (or however you would do a constructor)?
-      return 0;
+      // Read the file and put it in file_contents.bbg
    }
 }

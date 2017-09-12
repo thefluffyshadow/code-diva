@@ -5,19 +5,22 @@ public class Pilot
    public static void main(String[] args)
 
    {
-      // Checks all of the args to see if any of them are turn-ons for Tracer.
-      for (String arg : args)
+      // Checks the first arg to see if it turns Tracer on.
+      if (args[0].toLowerCase().equals("tracer"))
       {
-         if (arg.toLowerCase().equals("tracer"))
-         {
-            Tracer = true;
-         }
+         Tracer = true;
       }
 
       // Tracer statement to list all of the passed-in args.
       if (Tracer)
       {
          list_args(args);
+      }
+
+
+      for (int a = 1; a < args.length; a++)
+      {
+
       }
 
 
