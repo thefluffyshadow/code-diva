@@ -6,44 +6,65 @@
 
 public class Diva
 {
-   public String Filename;
-   public String FileContents;
-   public int NumErrors;
-   public String Report;
+   String Filename;
+   String FileContents;
+   int NumErrors;
+   String Report;
    private boolean Diva_Tracer;
 
    Diva (String filename, boolean Tracer)
    {
-      // Read the file and put it in file_contents.bbg
+      this.Filename = filename;
       this.Diva_Tracer = Tracer;
+      this.Report = "Report for " + this.Filename + ":";
    }
 
-   static void ReadJava()
-   {}
+   void ReadJava()
+   {
+      DeclareCheckerMethod("ReadJava");
+   }
 
-   static void CheckOptCurlyBraces()
-   {}
+   void CheckOptCurlyBraces()
+   {
+      DeclareCheckerMethod("CheckOptCurlyBraces");
+   }
 
-   static void CheckBlockIndentation()
-   {}
+   void CheckBlockIndentation()
+   {
+      DeclareCheckerMethod("CheckBlockIndentation");
+   }
 
-   static void CheckBinaryOpSpaces()
-   {}
+   void CheckBinaryOpSpaces()
+   {
+      DeclareCheckerMethod("CheckBinaryOpSpaces");
+   }
 
-   static void CheckBraceAlignment()
-   {}
+   void CheckBraceAlignment()
+   {
+      DeclareCheckerMethod("CheckBraceAlignment");
+   }
 
-   static void CheckVariableCase()
-   {}
+   void CheckVariableCase()
+   {
+      DeclareCheckerMethod("CheckVariableCase");
+   }
 
-   static void CheckMultipleStatementLines()
-   {}
+   void CheckMultipleStatementLines()
+   {
+      DeclareCheckerMethod("CheckMultipleStatementLines");
+   }
 
-   static void CheckMaxLineLength()
-   {}
+   void CheckMaxLineLength()
+   {
+      DeclareCheckerMethod("CheckMaxLineLength");
+   }
 
-   static void PrintReport()
-   {}
+   void PrintReport()
+   {
+      System.out.println("\n================================================================\n");
+      System.out.println(this.Report);
+      System.out.println();
+   }
 
    private void DeclareCheckerMethod(String MethodName)
    {

@@ -12,7 +12,7 @@ public class Pilot
 
    {
       // Checks the first arg to see if it turns Tracer on.
-      if (args[0].toLowerCase().equals("tracer"))
+      if ((args.length > 0) && (args[0].toLowerCase().equals("tracer")))
       {
          Tracer = true;
       }
@@ -23,21 +23,30 @@ public class Pilot
          list_args(args);
       }
 
-      for (int a = 1; a < args.length; a++)
+      if (args.length > 0)
       {
-         Diva NewDiva = new Diva(args[a], Tracer);
+         for (int a = 1; a < args.length; a++)
+         {
+            Diva NewDiva = new Diva(args[a], Tracer);
 
-         NewDiva.ReadJava();
+            NewDiva.ReadJava();
 
-         NewDiva.CheckOptCurlyBraces();
-         NewDiva.CheckBlockIndentation();
-         NewDiva.CheckBinaryOpSpaces();
-         NewDiva.CheckBraceAlignment();
-         NewDiva.CheckVariableCase();
-         NewDiva.CheckMultipleStatementLines();
-         NewDiva.CheckMaxLineLength();
+            NewDiva.CheckOptCurlyBraces();
+            NewDiva.CheckBlockIndentation();
+            NewDiva.CheckBinaryOpSpaces();
+            NewDiva.CheckBraceAlignment();
+            NewDiva.CheckVariableCase();
+            NewDiva.CheckMultipleStatementLines();
+            NewDiva.CheckMaxLineLength();
 
-         NewDiva.PrintReport();
+            NewDiva.PrintReport();
+         }
+      }
+      else
+      {
+         System.out.println("No files to inspect. The Code Diva is bored.");
+         System.out.println("Please pass in files as arguments for the Diva to inspect.");
+         System.out.println("> \"java Pilot example_java.txt\"");
       }
 
 
