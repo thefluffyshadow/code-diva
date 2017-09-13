@@ -1,3 +1,9 @@
+/*
+ * Programmer:         Zachary Champion
+ * Project:            Code Diva
+ * Date Last Updated:  13 Sept 2017
+ */
+
 public class Pilot
 {
    private static boolean Tracer = false;
@@ -17,10 +23,21 @@ public class Pilot
          list_args(args);
       }
 
-
       for (int a = 1; a < args.length; a++)
       {
+         Diva NewDiva = new Diva(args[a], Tracer);
 
+         NewDiva.ReadJava();
+
+         NewDiva.CheckOptCurlyBraces();
+         NewDiva.CheckBlockIndentation();
+         NewDiva.CheckBinaryOpSpaces();
+         NewDiva.CheckBraceAlignment();
+         NewDiva.CheckVariableCase();
+         NewDiva.CheckMultipleStatementLines();
+         NewDiva.CheckMaxLineLength();
+
+         NewDiva.PrintReport();
       }
 
 

@@ -6,12 +6,40 @@
 
 public class Diva
 {
-   public int num_errors;
-   public String file_contents;
-   public String diva_report;
+   public String Filename;
+   public String FileContents;
+   public int NumErrors;
+   public String Report;
 
    Diva (String filename, boolean Tracer)
    {
       // Read the file and put it in file_contents.bbg
    }
+
+   static void ReadJava()
+   {}
+
+   static void CheckOptCurlyBraces()
+   {}
+
+   static void CheckBlockIndentation()
+   {}
+
+   static void CheckBinaryOpSpaces()
+   {}
+
+   static void CheckBraceAlignment()
+   {}
+
+   static void CheckVariableCase()
+   {}
+
+   static void CheckMultipleStatementLines()
+   {}
+
+   static void CheckMaxLineLength()
+   {}
+
+   static void PrintReport()
+   {}
 }
