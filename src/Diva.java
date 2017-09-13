@@ -45,7 +45,7 @@ public class Diva
    static void PrintReport()
    {}
 
-   private static void DeclareCheckerMethod(String MethodName)
+   private void DeclareCheckerMethod(String MethodName)
    {
       if (this.Diva_Tracer)
       {
