@@ -1,15 +1,18 @@
+import java.io.*;
+import java.util.Scanner;
+
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  13 September 2017
+* Date Last Updated:  14 September 2017
 */
 
 public class Diva
 {
-   String Filename;
-   String FileContents;
-   int NumErrors;
-   String Report;
+   private String Filename;
+   private String FileContents;
+   private int NumErrors;
+   private String Report;
    private boolean Diva_Tracer;
 
    Diva (String filename, boolean Tracer)
@@ -20,8 +23,23 @@ public class Diva
    }
 
    void ReadJava()
-   {
+   {  // Reads into the class variable the entirety of the file contents so we don't have to do it again.
       DeclareCheckerMethod("ReadJava");
+
+      try
+      {
+         this.FileContents = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
+
+         if (this.Diva_Tracer)
+         {
+            System.out.println("...file read success.");
+         }
+      }
+      catch (FileNotFoundException e)
+      {
+         System.out.println("...File read failed.");
+         e.printStackTrace();
+      }
    }
 
    void CheckOptCurlyBraces()

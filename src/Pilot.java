@@ -1,7 +1,7 @@
 /*
  * Programmer:         Zachary Champion
  * Project:            Code Diva
- * Date Last Updated:  13 Sept 2017
+ * Date Last Updated:  14 September 2017
  */
 
 public class Pilot
@@ -11,10 +11,17 @@ public class Pilot
    public static void main(String[] args)
 
    {
+      int arg_start; // Tells the pilot where the first of the program arguments is in the array.
+
       // Checks the first arg to see if it turns Tracer on.
       if ((args.length > 0) && (args[0].toLowerCase().equals("tracer")))
       {
          Tracer = true;
+         arg_start = 1;
+      }
+      else
+      {
+         arg_start = 0;
       }
 
       // Tracer statement to list all of the passed-in args.
@@ -25,7 +32,7 @@ public class Pilot
 
       if (args.length > 0)
       {
-         for (int a = 1; a < args.length; a++)
+         for (int a = arg_start; a < args.length; a++)
          {
             Diva NewDiva = new Diva(args[a], Tracer);
 
