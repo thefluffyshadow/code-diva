@@ -27,28 +27,14 @@ public class Pilot
       // Tracer statement to list all of the passed-in args.
       if (Tracer)
       {
-         list_args(args);
+         ListArgs(args);
       }
 
       if (args.length > 0)
       {
-         for (int a = arg_start; a < args.length; a++)
-         {
-            Diva NewDiva = new Diva(args[a], Tracer);
-
-            NewDiva.ReadJava();
-
-            NewDiva.CheckOptCurlyBraces();
-            NewDiva.CheckBlockIndentation();
-            NewDiva.CheckBinaryOpSpaces();
-            NewDiva.CheckBraceAlignment();
-            NewDiva.CheckVariableCase();
-            NewDiva.CheckMultipleStatementLines();
-            NewDiva.CheckMaxLineLength();
-
-            NewDiva.PrintReport();
-         }
+         RecruitCodeDivas(args, arg_start);
       }
+
       else
       {
          System.out.println("No files to inspect. The Code Diva is bored.");
@@ -59,7 +45,27 @@ public class Pilot
 
    }
 
-   private static void list_args(String[] args)
+   private static void RecruitCodeDivas(String[] args, int arg_start)
+   {
+      for (int a = arg_start; a < args.length; a++)
+      {
+         Diva NewDiva = new Diva(args[a], Tracer);
+
+         NewDiva.ReadJava();
+
+         NewDiva.CheckOptCurlyBraces();
+         NewDiva.CheckBlockIndentation();
+         NewDiva.CheckBinaryOpSpaces();
+         NewDiva.CheckBraceAlignment();
+         NewDiva.CheckVariableCase();
+         NewDiva.CheckMultipleStatementLines();
+         NewDiva.CheckMaxLineLength();
+
+         NewDiva.PrintReport();
+      }
+   }
+
+   private static void ListArgs(String[] args)
    {
       // List the arguments passed in if there are any to confirm test receipt.
       if (args.length > 0)
