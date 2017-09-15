@@ -35,6 +35,7 @@ public class Diva
          if (this.Diva_Tracer)
          {
             System.out.println("...file read success.");
+
             for (String line : this.FileContents)
             {
                System.out.println(line);

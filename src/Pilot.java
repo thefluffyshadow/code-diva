@@ -24,19 +24,18 @@ public class Pilot
          arg_start = 0;
       }
 
-      // Tracer statement to list all of the passed-in args.
       if (Tracer)
-      {
+      {  // Tracer statement to list all of the passed-in args.
          ListArgs(args);
       }
 
       if (args.length > 0)
-      {
+      {  // Run the main checker on each file passed in as an argument.
          RecruitCodeDivas(args, arg_start);
       }
 
       else
-      {
+      {  // If the user has passed in no arguments, tell them how to.
          System.out.println("No files to inspect. The Code Diva is bored.");
          System.out.println("Please pass in files as arguments for the Diva to inspect.");
          System.out.println("> \"java Pilot example_java.txt\"");
@@ -51,8 +50,10 @@ public class Pilot
       {
          Diva NewDiva = new Diva(args[a], Tracer);
 
+         // Read the code file and store it in NewDiva.
          NewDiva.ReadJava();
 
+         // Do all the checks on the code file.
          NewDiva.CheckOptCurlyBraces();
          NewDiva.CheckBlockIndentation();
          NewDiva.CheckBinaryOpSpaces();
@@ -61,6 +62,7 @@ public class Pilot
          NewDiva.CheckMultipleStatementLines();
          NewDiva.CheckMaxLineLength();
 
+         // Print out the Diva's findings.
          NewDiva.PrintReport();
       }
    }
