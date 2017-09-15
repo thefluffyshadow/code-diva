@@ -1,5 +1,6 @@
 import java.io.*;
-import java.util.Scanner;
+import java.nio.file.*;
+import java.util.List;
 
 /*
 * Programmer:         Zachary Champion
@@ -10,7 +11,7 @@ import java.util.Scanner;
 public class Diva
 {
    private String Filename;
-   private String FileContents;
+   private List<String> FileContents;
    private int NumErrors;
    private String Report;
    private boolean Diva_Tracer;
@@ -28,14 +29,19 @@ public class Diva
 
       try
       {
-         this.FileContents = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
+         this.FileContents = Files.readAllLines(Paths.get(this.Filename));
+
 
          if (this.Diva_Tracer)
          {
             System.out.println("...file read success.");
+            for (String line : this.FileContents)
+            {
+               System.out.println(line);
+            }
          }
       }
-      catch (FileNotFoundException e)
+      catch (IOException e)
       {
          System.out.println("...File read failed.");
          e.printStackTrace();
