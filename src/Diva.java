@@ -51,6 +51,14 @@ public class Diva
    void CheckOptCurlyBraces()
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
+
+      for (int l = 0; l < this.FileContents.size(); l++)
+      {
+         if (this.Diva_Tracer)
+         {
+            System.out.println("......checking line " + l + " || " + this.FileContents.get(l));
+         }
+      }
    }
 
    void CheckBlockIndentation()
