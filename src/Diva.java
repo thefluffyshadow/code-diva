@@ -5,7 +5,7 @@ import java.util.List;
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  14 September 2017
+* Date Last Updated:  18 September 2017
 */
 
 public class Diva
@@ -20,7 +20,7 @@ public class Diva
    {
       this.Filename = filename;
       this.Diva_Tracer = Tracer;
-      this.Report = "Report for " + this.Filename + ":";
+      this.Report = "Report for " + this.Filename + ":" + "\n\n";
    }
 
    void ReadJava()
@@ -53,11 +53,17 @@ public class Diva
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
 
-      for (int l = 0; l < this.FileContents.size(); l++)
+      for (int ln = 0; ln < this.FileContents.size(); ln++)
       {
-         if (this.Diva_Tracer)
+         String proc_line = FileContents.get(ln).trim().toLowerCase();
+
+         if (proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
+               proc_line.startsWith("while") || proc_line.startsWith("do"))
          {
-            System.out.println("......checking line " + l + " || " + this.FileContents.get(l));
+            this.AppendToReport(FileContents.get(ln - 1));
+            this.AppendToReport(FileContents.get(ln));
+            this.AppendToReport(FileContents.get(ln + 1));
+            this.AppendToReport();
          }
       }
    }
@@ -90,6 +96,16 @@ public class Diva
    void CheckMaxLineLength()
    {
       DeclareCheckerMethod("CheckMaxLineLength");
+   }
+
+   private void AppendToReport()
+   {
+      this.Report += '\n';
+   }
+
+   private void AppendToReport(String line)
+   {
+      this.Report += line + '\n';
    }
 
    void PrintReport()

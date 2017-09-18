@@ -24,10 +24,8 @@ public class Pilot
          arg_start = 0;
       }
 
-      if (Tracer)
-      {  // Tracer statement to list all of the passed-in args.
-         ListArgs(args);
-      }
+      // list all of the passed-in args.
+      ListArgs(args);
 
       if (args.length > 0)
       {  // Run the main checker on each file passed in as an argument.
@@ -72,11 +70,11 @@ public class Pilot
       // List the arguments passed in if there are any to confirm test receipt.
       if (args.length > 0)
       {
-         System.out.println("..." + args.length + " args passed...");
+         System.out.println("Code files specified to check:");
 
-         for (int a = 0; a < args.length; a++)
+         for (String arg : args)
          {
-            System.out.println("...arg[" + a + "] passed:  \"" + args[a] + "\"");
+            System.out.println(" > " + arg);
          }
 
       }

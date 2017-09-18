@@ -58,6 +58,8 @@ Total of 6 test cases to submit for classmates to use:
 
 All test programs will be named "yourname_errortype".java as per guidelines that will be on the forums.
 
+As such, any test programs not written by me will have the first name of the author in the name of the file.
+
 ## Other Notes:
 Pick 6 output of Diva's reports to show Dr. Gurka to showcase the range of what she can do.
 
