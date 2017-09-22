@@ -108,7 +108,7 @@ public class Diva
       DeclareCheckerMethod("CheckMaxLineLength");
    }
 
-   void FinReport()
+   private void FinReport()
    {
       this.AppendToReport("Total Error Count:  " + this.NumErrors);
    }
