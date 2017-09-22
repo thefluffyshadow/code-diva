@@ -61,7 +61,7 @@ public class Diva
          if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
                proc_line.startsWith("while"))
                &&
-               (!proc_next_line.startsWith("{")))
+               (!proc_next_line.startsWith("{")))  // TODO: TURN THIS INTO REGEX
          {
             this.NumErrors++;
             int error_line = ln + 1;
@@ -84,6 +84,16 @@ public class Diva
       for (int ln = 0; ln < this.FileContents.size(); ln++)
       {
          String proc_line = FileContents.get(ln).trim().toLowerCase();
+
+         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
+               && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
+               || proc_line.contains("++") || proc_line.contains("--"))
+               && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
+               || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
+         {
+            this.AppendToReport("Binary op missing spaces around it on line " + ln);
+            this.NumErrors++;
+         }
 
       }
    }
