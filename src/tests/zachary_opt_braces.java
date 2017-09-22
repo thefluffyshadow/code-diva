@@ -24,7 +24,9 @@ public class zachary_opt_braces
           System.out.println("i = " + ++i);
 
        for (int y = 0; y <= 8; y++)
+       {
           for (int x = 0; x <= 8; x++)
              System.out.println(x + " * " + y + " = " + x * y);
+       }
 	}
 }

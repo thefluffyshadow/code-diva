@@ -53,19 +53,23 @@ public class Diva
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
 
-      for (int ln = 0; ln < this.FileContents.size(); ln++)
+      for (int ln = 0; ln < this.FileContents.size() - 1; ln++)
       {
          String proc_line = FileContents.get(ln).trim().toLowerCase();
+         String proc_next_line = FileContents.get(ln + 1).trim().toLowerCase();
 
-         if (proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
-               proc_line.startsWith("while") || proc_line.startsWith("do"))
+         if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
+               proc_line.startsWith("while"))
+               &&
+               (!proc_next_line.startsWith("{")))
          {
-            this.AppendToReport(FileContents.get(ln - 1));
-            this.AppendToReport(FileContents.get(ln));
-            this.AppendToReport(FileContents.get(ln + 1));
-            this.AppendToReport();
+            this.NumErrors++;
+            int error_line = ln + 1;
+            this.AppendToReport("Optional brace missing from line " + error_line);
          }
       }
+
+      this.AppendToReport();
    }
 
    void CheckBlockIndentation()
@@ -76,6 +80,12 @@ public class Diva
    void CheckBinaryOpSpaces()
    {
       DeclareCheckerMethod("CheckBinaryOpSpaces");
+
+      for (int ln = 0; ln < this.FileContents.size(); ln++)
+      {
+         String proc_line = FileContents.get(ln).trim().toLowerCase();
+
+      }
    }
 
    void CheckBraceAlignment()
@@ -98,6 +108,11 @@ public class Diva
       DeclareCheckerMethod("CheckMaxLineLength");
    }
 
+   void FinReport()
+   {
+      this.AppendToReport("Total Error Count:  " + this.NumErrors);
+   }
+
    private void AppendToReport()
    {
       this.Report += '\n';
@@ -110,7 +125,8 @@ public class Diva
 
    void PrintReport()
    {
-      System.out.println("\n================================================================\n");
+      this.FinReport();
+      System.out.println("================================================================\n");
       System.out.println(this.Report);
       System.out.println();
    }
@@ -123,3 +139,4 @@ public class Diva
       }
    }
 }
+
