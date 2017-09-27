@@ -1,17 +1,18 @@
 import java.io.*;
 import java.nio.file.*;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  18 September 2017
+* Date Last Updated:  22 September 2017
 */
 
 public class Diva
 {
    private String Filename;
-   private List<String> FileContents;
+   private String FileContents;
    private int NumErrors;
    private String Report;
    private boolean Diva_Tracer;
@@ -29,17 +30,12 @@ public class Diva
 
       try
       {
-         this.FileContents = Files.readAllLines(Paths.get(this.Filename));
-
+         this.FileContents = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
 
          if (this.Diva_Tracer)
          {
-            System.out.println("...file read success.");
-
-            for (String line : this.FileContents)
-            {
-               System.out.println(line);
-            }
+            System.out.println("...file read success.\n" +
+                               this.FileContents);
          }
       }
       catch (IOException e)
@@ -58,10 +54,10 @@ public class Diva
          String proc_line = FileContents.get(ln).trim().toLowerCase();
          String proc_next_line = FileContents.get(ln + 1).trim().toLowerCase();
 
-         if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
-               proc_line.startsWith("while"))
+         if ((proc_line.startsWith("if") || proc_line.startsWith("else") ||
+               proc_line.startsWith("for") || proc_line.startsWith("while"))
                &&
-               (!proc_next_line.startsWith("{")))  // TODO: TURN THIS INTO REGEX
+               (!proc_next_line.startsWith("{")))
          {
             this.NumErrors++;
             int error_line = ln + 1;
@@ -81,6 +77,9 @@ public class Diva
    {
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
+      // Put together the regular expression that will recognize the binary operations.
+      Pattern BinaryOpPattern = Pattern.compile("[.[^ +-*/]][+-*/][.[^ +-*/]");
+
       for (int ln = 0; ln < this.FileContents.size(); ln++)
       {
          String proc_line = FileContents.get(ln).trim().toLowerCase();
@@ -94,7 +93,6 @@ public class Diva
             this.AppendToReport("Binary op missing spaces around it on line " + ln);
             this.NumErrors++;
          }
-
       }
    }
 

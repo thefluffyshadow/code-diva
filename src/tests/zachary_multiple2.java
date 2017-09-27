@@ -44,7 +44,7 @@ public class zachary_multiple2
       while (i >= 0)
       {
          i--;
-         System.out.println("i: " + i);
+         System.out.println("i: "+ i);
       }
    }
 
