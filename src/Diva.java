@@ -49,21 +49,15 @@ public class Diva
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
 
-      for (int ln = 0; ln < this.FileContents.size() - 1; ln++)
-      {
-         String proc_line = FileContents.get(ln).trim().toLowerCase();
-         String proc_next_line = FileContents.get(ln + 1).trim().toLowerCase();
-
-         if ((proc_line.startsWith("if") || proc_line.startsWith("else") ||
-               proc_line.startsWith("for") || proc_line.startsWith("while"))
-               &&
-               (!proc_next_line.startsWith("{")))
-         {
-            this.NumErrors++;
-            int error_line = ln + 1;
-            this.AppendToReport("Optional brace missing from line " + error_line);
-         }
-      }
+//      if ((proc_line.startsWith("if") || proc_line.startsWith("else") ||
+//            proc_line.startsWith("for") || proc_line.startsWith("while"))
+//            &&
+//            (!proc_next_line.startsWith("{")))
+//      {
+//         this.NumErrors++;
+//         int error_line = ln + 1;
+//         this.AppendToReport("Optional brace missing from line " + error_line);
+//      }
 
       this.AppendToReport();
    }
@@ -78,22 +72,19 @@ public class Diva
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
       // Put together the regular expression that will recognize the binary operations.
-      Pattern BinaryOpPattern = Pattern.compile("[.[^ +-*/]][+-*/][.[^ +-*/]");
+//      Pattern BinaryOpPattern = Pattern.compile("[.[^ +-*/]][+-*/][.[^ +-*/]");
 
-      for (int ln = 0; ln < this.FileContents.size(); ln++)
-      {
-         String proc_line = FileContents.get(ln).trim().toLowerCase();
-
-         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
-               && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
-               || proc_line.contains("++") || proc_line.contains("--"))
-               && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
-               || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
-         {
-            this.AppendToReport("Binary op missing spaces around it on line " + ln);
-            this.NumErrors++;
-         }
-      }
+//      String proc_line = FileContents.get(ln).trim().toLowerCase();
+//
+//      if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
+//            && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
+//            || proc_line.contains("++") || proc_line.contains("--"))
+//            && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
+//            || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
+//      {
+//         this.AppendToReport("Binary op missing spaces around it on line " + ln);
+//         this.NumErrors++;
+//      }
    }
 
    void CheckBraceAlignment()

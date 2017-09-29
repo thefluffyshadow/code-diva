@@ -1,4 +1,4 @@
-package tests;
+package tests._multiple;
 
 /*
  * Programmer: Zachary Champion
