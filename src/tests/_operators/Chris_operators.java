@@ -12,9 +12,9 @@ class Chris_operators
       for(int i=0;i<10;i++)
       {
          System.out.println(i);
-		 i=1+i-1+2;
-		 i--;
-		 i++;
+         i = 1 + i - 1 + 2;
+         i--;
+         i++;
       }	
    }
 }

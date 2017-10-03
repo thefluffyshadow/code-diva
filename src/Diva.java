@@ -1,18 +1,18 @@
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  22 September 2017
+* Date Last Updated:  2 October 2017
 */
 
 public class Diva
 {
    private String Filename;
-   private String FileContents;
+   private List<String> FileContents;
    private int NumErrors;
    private String Report;
    private boolean Diva_Tracer;
@@ -30,12 +30,17 @@ public class Diva
 
       try
       {
-         this.FileContents = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
+         this.FileContents = Files.readAllLines(Paths.get(this.Filename));
+
 
          if (this.Diva_Tracer)
          {
-            System.out.println("...file read success.\n" +
-                               this.FileContents);
+            System.out.println("...file read success.");
+
+            for (String line : this.FileContents)
+            {
+               System.out.println(line);
+            }
          }
       }
       catch (IOException e)
@@ -49,15 +54,21 @@ public class Diva
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
 
-//      if ((proc_line.startsWith("if") || proc_line.startsWith("else") ||
-//            proc_line.startsWith("for") || proc_line.startsWith("while"))
-//            &&
-//            (!proc_next_line.startsWith("{")))
-//      {
-//         this.NumErrors++;
-//         int error_line = ln + 1;
-//         this.AppendToReport("Optional brace missing from line " + error_line);
-//      }
+      for (int ln = 0; ln < this.FileContents.size() - 1; ln++)
+      {
+         String proc_line = FileContents.get(ln).trim().toLowerCase();
+         String proc_next_line = FileContents.get(ln + 1).trim().toLowerCase();
+
+         if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
+               proc_line.startsWith("while"))
+               &&
+               (!proc_next_line.startsWith("{")))
+         {
+            this.NumErrors++;
+            int error_line = ln + 1;
+            this.AppendToReport("Optional brace missing from line " + error_line);
+         }
+      }
 
       this.AppendToReport();
    }
@@ -71,20 +82,21 @@ public class Diva
    {
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
-      // Put together the regular expression that will recognize the binary operations.
-//      Pattern BinaryOpPattern = Pattern.compile("[.[^ +-*/]][+-*/][.[^ +-*/]");
+      for (int ln = 0; ln < this.FileContents.size(); ln++)
+      {
+         String proc_line = FileContents.get(ln).trim().toLowerCase();
 
-//      String proc_line = FileContents.get(ln).trim().toLowerCase();
-//
-//      if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
-//            && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
-//            || proc_line.contains("++") || proc_line.contains("--"))
-//            && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
-//            || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
-//      {
-//         this.AppendToReport("Binary op missing spaces around it on line " + ln);
-//         this.NumErrors++;
-//      }
+         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
+               && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
+               || proc_line.contains("++") || proc_line.contains("--"))
+               && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
+               || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
+         {
+            this.AppendToReport("Binary op missing spaces around it on line " + ln);
+            this.NumErrors++;
+         }
+
+      }
    }
 
    void CheckBraceAlignment()
@@ -138,4 +150,3 @@ public class Diva
       }
    }
 }
-

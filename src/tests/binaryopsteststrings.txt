@@ -1,0 +1,33 @@
+/*
+This is the thing
+*/
+
+Good Strings:
+8*7
+9+ 9
+i -1
+Good:
+z*42
+666/10
+777% 13
+8*4
+2 +2
+print(8* 7);
+triple+ triple-triple *2
+(8*8)
+9+=5
+
+Bad:
+i + 1
+1 + i
+i + i
+j - 2
+2 * 7
+j / 4
+6 % 5
+(1 - 4)
+"this " + thing
+i--
+++i
+/* this is a comment */
+// this is another comment
