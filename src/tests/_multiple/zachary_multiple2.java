@@ -1,4 +1,4 @@
-package tests;
+package tests._multiple;
 
 /*
  * Programmer: Zachary Champion
@@ -29,7 +29,7 @@ public class zachary_multiple2
 
       for (int i = 0; i <= 8; i++)
          for (int j = 0; j <= 8; j++)
-            if (i * j == z)
+            if (i* j == z)
                System.out.println("42 is the answer to life, the universe, and everything!");
             else
                System.out.println(i * j);
@@ -44,7 +44,7 @@ public class zachary_multiple2
       while (i >= 0)
       {
          i--;
-         System.out.println("i: " + i);
+         System.out.println("i: " +i);
       }
    }
 
@@ -54,7 +54,8 @@ public class zachary_multiple2
 
       for (int i = 0; i < 10; ++i)
       {
-         System.out.println("i: " + i);
+         System.out.println("i: "
+               + i);
       }
    }
    private static void declare_method(String method_name)

@@ -1,11 +1,12 @@
-import java.io.*;
-import java.nio.file.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  18 September 2017
+* Date Last Updated:  2 October 2017
 */
 
 public class Diva
@@ -61,7 +62,9 @@ public class Diva
          if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
                proc_line.startsWith("while"))
                &&
-               (!proc_next_line.startsWith("{")))  // TODO: TURN THIS INTO REGEX
+               (!proc_next_line.startsWith("{"))
+               &&
+               (!proc_line.endsWith("{")))
          {
             this.NumErrors++;
             int error_line = ln + 1;
@@ -83,16 +86,47 @@ public class Diva
 
       for (int ln = 0; ln < this.FileContents.size(); ln++)
       {
-         String proc_line = FileContents.get(ln).trim().toLowerCase();
+         String proc_line = FileContents.get(ln).toLowerCase();
 
-         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))
-               && !(proc_line.contains("/*") || proc_line.contains("*/") || proc_line.startsWith("*")
-               || proc_line.contains("++") || proc_line.contains("--"))
-               && !(proc_line.contains(" + ") || proc_line.contains(" - ") || proc_line.contains(" * ")
-               || proc_line.contains(" / "))) // TODO: TURN THIS INTO REGEX
+         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/")))
          {
-            this.AppendToReport("Binary op missing spaces around it on line " + ln);
-            this.NumErrors++;
+            int binoperr = 0;  // Counts for multiple errors on one line.
+            int index = 0;
+
+            // Searches the string for all instances of +, -, *, /, or %.
+            while (index >= 0)  // index returns -1 if there's no match found.
+            {
+               // Checks the instance of an operator to see if it's a style violation
+               if (((proc_line.charAt(index - 1) != ' ') || (proc_line.charAt(index + 1) != ' '))
+                     &&
+                     !((proc_line.charAt(index - 1) == '/') || (proc_line.charAt(index + 1) == '/') ||
+                       (proc_line.charAt(index - 1) == '+') || (proc_line.charAt(index + 1) == '+') ||
+                       (proc_line.charAt(index - 1) == '-') || (proc_line.charAt(index + 1) == '-')))
+               {
+                  binoperr++;
+               }
+//               TODO BROKEN
+//               index = proc_line.indexOf("+", index + 1);
+//               if (proc_line.indexOf("-", index + 1) < index)
+//               {
+//                  index = proc_line.indexOf("-", index + 1);
+//               }
+//               else if (proc_line.indexOf("*", index + 1) < index)
+//               {
+//                  index = proc_line.indexOf("*", index + 1);
+//               }
+//               else if (proc_line.indexOf("/", index + 1) < index)
+//               {
+//                  index = proc_line.indexOf("/", index + 1);
+//               } TODO BROKEN
+            }
+
+            if (binoperr > 0)
+            {
+               // After the whole line has been checked, adds the results to the report.
+               this.AppendToReport(binoperr + " binary op(s) missing spaces on either side on line " + (ln + 1) + ".");
+               this.NumErrors += binoperr;
+            }
          }
 
       }
@@ -149,4 +183,3 @@ public class Diva
       }
    }
 }
-
