@@ -84,8 +84,33 @@ public class Diva
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
       for (int ln = 0; ln < this.FileContents.size(); ln++) {
-         String proc_line = FileContents.get(ln).toLowerCase();
+         String proc_line = FileContents.get(ln).trim().toLowerCase();
 
+         if (proc_line.contains("+"))
+         {
+            // Do the things for the + operator.
+         }
+         else if (proc_line.contains("-"))
+         {
+            // Do the thing
+         }
+         else if (proc_line.contains("*"))
+         {
+            // Things go here.
+         }
+         else if (proc_line.contains("/"))
+         {
+            // Dividing it all up!
+         }
+         else if (proc_line.contains("%"))
+         {
+            // Mods make the game.
+         }
+         else
+         {
+            // The line supposedly has no errors in it. Is this case necessary?
+         }
+         // Further postulation: could this if tree be a case statement?
 //         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))) {
 //            int binoperr = 0;  // Counts for multiple errors on one line.
 //            int index = 1;
