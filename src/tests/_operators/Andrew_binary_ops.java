@@ -18,7 +18,7 @@ public class Andrew_binary_ops {
     int val = 10;
 
     for (int i = 0; i < 10;) {
-      val = (val*i/2+i++)>>8;
+      val = (val*i/2+i++)>>8;  // TODO: Check if the ">>" is actually one of the errors that need to be caught.
       System.out.println("Here is a weird number that has gone through a grinder "+val);
     }
   }
