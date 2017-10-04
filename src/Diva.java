@@ -80,55 +80,49 @@ public class Diva
       DeclareCheckerMethod("CheckBlockIndentation");
    }
 
-   void CheckBinaryOpSpaces()
-   {
+   void CheckBinaryOpSpaces() {
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
-      for (int ln = 0; ln < this.FileContents.size(); ln++)
-      {
+      for (int ln = 0; ln < this.FileContents.size(); ln++) {
          String proc_line = FileContents.get(ln).toLowerCase();
 
-         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/")))
-         {
-            int binoperr = 0;  // Counts for multiple errors on one line.
-            int index = 0;
-
-            // Searches the string for all instances of +, -, *, /, or %.
-            while (index >= 0)  // index returns -1 if there's no match found.
-            {
-               // Checks the instance of an operator to see if it's a style violation
-               if (((proc_line.charAt(index - 1) != ' ') || (proc_line.charAt(index + 1) != ' '))
-                     &&
-                     !((proc_line.charAt(index - 1) == '/') || (proc_line.charAt(index + 1) == '/') ||
-                       (proc_line.charAt(index - 1) == '+') || (proc_line.charAt(index + 1) == '+') ||
-                       (proc_line.charAt(index - 1) == '-') || (proc_line.charAt(index + 1) == '-')))
-               {
-                  binoperr++;
-               }
-//               TODO BROKEN
-//               index = proc_line.indexOf("+", index + 1);
-//               if (proc_line.indexOf("-", index + 1) < index)
+//         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))) {
+//            int binoperr = 0;  // Counts for multiple errors on one line.
+//            int index = 1;
+//
+//            // Searches the string for all instances of +, -, *, /, or %.
+//            while (index > 0)  // index returns -1 if there's no match found.
+//            {
+//               // Checks the instance of an operator to see if it's a style violation
+//               if (((proc_line.charAt(index - 1) != ' ') || (proc_line.charAt(index + 1) != ' '))
+//                     &&
+//                     !((proc_line.charAt(index - 1) == '/') || (proc_line.charAt(index + 1) == '/') ||
+//                           (proc_line.charAt(index - 1) == '+') || (proc_line.charAt(index + 1) == '+') ||
+//                           (proc_line.charAt(index - 1) == '-') || (proc_line.charAt(index + 1) == '-')))
 //               {
+//                  binoperr++;
+//               }
+//
+//               if (proc_line.indexOf("+", index + 1) < index) {
+//                  index = proc_line.indexOf("+", index + 1);
+//               } else if (proc_line.indexOf("-", index + 1) < index) {
 //                  index = proc_line.indexOf("-", index + 1);
-//               }
-//               else if (proc_line.indexOf("*", index + 1) < index)
-//               {
+//               } else if (proc_line.indexOf("*", index + 1) < index) {
 //                  index = proc_line.indexOf("*", index + 1);
-//               }
-//               else if (proc_line.indexOf("/", index + 1) < index)
-//               {
+//               } else if (proc_line.indexOf("/", index + 1) < index) {
 //                  index = proc_line.indexOf("/", index + 1);
-//               } TODO BROKEN
-            }
-
-            if (binoperr > 0)
-            {
-               // After the whole line has been checked, adds the results to the report.
-               this.AppendToReport(binoperr + " binary op(s) missing spaces on either side on line " + (ln + 1) + ".");
-               this.NumErrors += binoperr;
-            }
-         }
-
+//               } else if (proc_line.indexOf("%", index + 1) < index) {
+//                  index = proc_line.indexOf("%", index + 1);
+//               }
+//
+//               if (binoperr > 0) {
+//                  // After the whole line has been checked, adds the results to the report.
+//                  this.AppendToReport(binoperr + " binary op(s) missing spaces on either side on line " + ln + ".");
+//                  this.NumErrors += binoperr;
+//               }
+//            }
+//
+//         }
       }
    }
 
