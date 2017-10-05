@@ -1,3 +1,9 @@
+/*
+Douglas
+Binary infix operators
+errors on lines 12, 17, 22, & 27
+ */
+package tests._operators;
 public class Douglas_operator {
 
    int firstNum = 2;

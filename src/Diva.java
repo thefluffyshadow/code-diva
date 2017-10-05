@@ -1,9 +1,8 @@
 import java.io.IOException;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 * Programmer:         Zachary Champion
@@ -15,6 +14,7 @@ public class Diva
 {
    private String Filename;
    private String[] FileHeader;
+   private int FileHeaderLen;
    private String[] FileContents;
    private int NumErrors;
    private String Report;
@@ -49,12 +49,15 @@ public class Diva
          try
          {
             // Assign each part to the header and the contents of the file according to the assignment specs.
-            this.FileHeader = RawFileArray[1].split("\\n");  // Take the second part - that is, after the header comment starts.
+            this.FileHeader = RawFileArray[1].split("\\n");    // Take the second part - that is, after the header
+                                                                  // comment starts.
             this.FileContents = RawFileArray[2].split("\\n");
+            this.FileHeaderLen = this.FileHeader.length + 2;      // Keeps track of how long the header in the original
+                                                                  // file is so that Diva can give accurate line numbers
          }
          catch (ArrayIndexOutOfBoundsException e)
          {
-            System.out.println(RawFile);
+            e.printStackTrace();
             System.exit(8);
          }
 
@@ -94,7 +97,7 @@ public class Diva
                (!proc_line.endsWith("{")))
          {
             this.NumErrors++;
-            this.AppendToReport("Optional brace missing from line " + (ln + 1));
+            this.AppendToReport("Optional brace missing from line " + GetLnNum(ln));
          }
       }
 
@@ -112,7 +115,7 @@ public class Diva
          if (countLeadingSpaces(this.FileContents[ln]) != properIndent
                && this.FileContents[ln].length() > 0)
          {
-            this.AppendToReport("Improper indentation at line " + (ln + 1) + ".");
+            this.AppendToReport("Improper indentation at line " + GetLnNum(ln) + ".");
             this.NumErrors++;
          }
 
@@ -146,19 +149,20 @@ public class Diva
    }
 
    void CheckBinaryOpSpaces() {
-//      // TODO: BROKEN
-//      DeclareCheckerMethod("CheckBinaryOpSpaces");
-//
-//      for (int ln = 0; ln < this.FileContents.length; ln++) {
-//         String proc_line = FileContents[ln].trim().toLowerCase();
-//         String BinaryErrorString = "Binary infix operator missing space(s) on line " + (ln + 1) + ".";
-//
+      DeclareCheckerMethod("CheckBinaryOpSpaces");
+
+      Pattern BinOpPat = Pattern.compile(
+            "[^ \\Q/*+-.\\E][\\Q+-*/%\\E][^\\Q*/+-\\E\\n]|[^\\Q*/+-.\\E][\\Q+-*/%\\E][^ \\Q+-*/=\\E\\n]"
+      ); // Heck of a regex, but she works.
+
+      for (int ln = 0; ln < this.FileContents.length; ln++) {
+         String BinaryErrorString = "Binary infix operator missing space(s) on line " + GetLnNum(ln) + ".";
 //
 //         if (((proc_line.indexOf("+") > 0) && proc_line.indexOf("+") < proc_line.length())
 //               && (!(proc_line.charAt(proc_line.indexOf("+") - 1) == ' ')
 //               || !(proc_line.charAt(proc_line.indexOf("+") + 1) == ' '))
-//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '+')   // Check to make sure it's not a unary op,
-//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '+'))  // such as num++.
+//               && !(proc_line.charAt(proc_line.indexOf("+") - 1) == '+')   // Check to make sure it's not a unary op,
+//               && !(proc_line.charAt(proc_line.indexOf("+") + 1) == '+'))  // such as num++.
 //         {
 //            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
 //         }
@@ -192,7 +196,13 @@ public class Diva
 //         {
 //            HandleBinOpErr(BinaryErrorString);
 //         }
-//      }
+         Matcher Clouseau = BinOpPat.matcher(this.FileContents[ln]);
+
+         while (Clouseau.find())
+         {
+            HandleBinOpErr(BinaryErrorString);
+         }
+      }
    }
 
    private void HandleBinOpErr(String binaryErrorString)
@@ -223,7 +233,29 @@ public class Diva
 
    private void FinReport()
    {
-      this.AppendToReport("Total Error Count:  " + this.NumErrors);
+      if (this.NumErrors > 0)
+      {
+         this.AppendToReport("Total Error Count:  " + this.NumErrors);
+      }
+      else
+      {
+         this.AppendToReport("                                 .''.\n" +
+               "       .''.             *''*    :_\\/_:     . \n" +
+               "      :_\\/_:   .    .:.*_\\/_*   : /\\ :  .'.:.'.\n" +
+               "  .''.: /\\ : _\\(/_  ':'* /\\ *  : '..'.  -=:o:=-\n" +
+               " :_\\/_:'.:::. /)\\*''*  .|.* '.\\'/.'_\\(/_'.':'.'\n" +
+               " : /\\ : :::::  '*_\\/_* | |  -= o =- /)\\    '  *\n" +
+               "  '..'  ':::'   * /\\ * |'|  .'/.\\'.  '._____\n" +
+               "      *        __*..* |  |     :      |.   |' .---\"|\n" +
+               "       _*   .-'   '-. |  |     .--'|  ||   | _|    |\n" +
+               "    .-'|  _.|  |    ||   '-__  |   |  |    ||      |\n" +
+               "    |' | |.    |    ||       | |   |  |    ||      |\n" +
+               " ___|  '-'     '    \"\"       '-'   '-.'    '`      |____\n" +
+               "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+               "                       NO ERRORS\n" +
+               "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+         );
+      }
    }
 
    private void AppendToReport()
@@ -250,5 +282,10 @@ public class Diva
       {
          System.out.println("...in checker method " + MethodName);
       }
+   }
+
+   private int GetLnNum(int i)
+   {
+      return this.FileHeaderLen - 1 + i;
    }
 }
