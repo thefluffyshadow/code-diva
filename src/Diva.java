@@ -1,14 +1,13 @@
-import java.io.IOException;
-import java.io.File;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
 * Date Last Updated:  2 October 2017
 */
+import java.io.IOException;
+import java.io.File;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Diva
 {
@@ -100,8 +99,6 @@ public class Diva
             AppendToReport("Optional brace missing from line " + GetLnNum(ln + 1));
          }
       }
-
-      AppendToReport();
    }
 
    void CheckBlockIndentation()
@@ -112,25 +109,26 @@ public class Diva
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
-         if (this.FileContents[ln].contains("}"))
+         if (this.FileContents[ln].contains("}")
+               && !FileContents[ln].contains("{"))
          {
             properIndent -= 3;
          }
 
          if (countLeadingSpaces(this.FileContents[ln]) != properIndent
-               && this.FileContents[ln].trim().length() > 0)
+               && this.FileContents[ln].trim().length() > 0
+               && this.FileContents[ln].trim().startsWith(""))
          {
             AppendToReport("Improper indentation at line " + GetLnNum(ln) + ".");
             this.NumErrors++;
          }
 
-         if (this.FileContents[ln].contains("{"))
+         if (this.FileContents[ln].contains("{")
+               && !FileContents[ln].contains("}"))
          {
             properIndent += 3;
          }
       }
-
-      AppendToReport();
    }
 
    private int countLeadingSpaces(String line)
@@ -208,8 +206,6 @@ public class Diva
             HandleBinOpErr(BinaryErrorString);
          }
       }
-
-      AppendToReport();
    }
 
    private void HandleBinOpErr(String binaryErrorString)
@@ -280,7 +276,6 @@ public class Diva
       this.FinReport();
       System.out.println("================================================================\n");
       System.out.println(this.Report);
-      System.out.println();
    }
 
    private void DeclareCheckerMethod(String MethodName)

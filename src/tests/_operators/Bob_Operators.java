@@ -1,9 +1,8 @@
-package tests._operators;
 /*
 	Dong(Bob) Lee
 	09/10/17
 */
-
+package tests._operators;
 class Bob_Operators
 {
 
@@ -13,11 +12,15 @@ class Bob_Operators
       int[] list = {1,3,4,5,2,6,7,0};
       int temp;
 
-      for(int pass = 0; pass < (list.length-1); pass++){
+      for(int pass = 0; pass < (list.length-1); pass++)
+      {
          int smallestValueIndex = pass;
-         for(int index = pass+1; index < list.length; index++){
+         for(int index = pass+1; index < list.length; index++)
+         {
             if(list[smallestValueIndex] > list[index])
+            {
                smallestValueIndex = index;
+            }
          }
          temp = list[pass];
          list[pass] = list[smallestValueIndex];
