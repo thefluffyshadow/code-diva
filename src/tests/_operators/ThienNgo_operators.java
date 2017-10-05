@@ -6,9 +6,11 @@ There are two operator space errors on line 23
 package tests._operators;
 import java.util.Scanner;
 
-public class ThienNgo_operators {
+public class ThienNgo_operators
+{
    
-   public static void main (String[]args) {
+   public static void main (String[]args)
+   {
       
       Scanner console = new Scanner(System.in);
       double num1, num2; 

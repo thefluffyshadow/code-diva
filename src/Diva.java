@@ -97,11 +97,11 @@ public class Diva
                (!proc_line.endsWith("{")))
          {
             this.NumErrors++;
-            this.AppendToReport("Optional brace missing from line " + GetLnNum(ln));
+            AppendToReport("Optional brace missing from line " + GetLnNum(ln + 1));
          }
       }
 
-      this.AppendToReport();
+      AppendToReport();
    }
 
    void CheckBlockIndentation()
@@ -112,10 +112,15 @@ public class Diva
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
-         if (countLeadingSpaces(this.FileContents[ln]) != properIndent
-               && this.FileContents[ln].length() > 0)
+         if (this.FileContents[ln].contains("}"))
          {
-            this.AppendToReport("Improper indentation at line " + GetLnNum(ln) + ".");
+            properIndent -= 3;
+         }
+
+         if (countLeadingSpaces(this.FileContents[ln]) != properIndent
+               && this.FileContents[ln].trim().length() > 0)
+         {
+            AppendToReport("Improper indentation at line " + GetLnNum(ln) + ".");
             this.NumErrors++;
          }
 
@@ -123,18 +128,17 @@ public class Diva
          {
             properIndent += 3;
          }
-         else if (this.FileContents[ln].contains("{"))
-         {
-            properIndent -= 3;
-         }
       }
+
+      AppendToReport();
    }
 
    private int countLeadingSpaces(String line)
    {
       int space_count = 0;
 
-      if (line.length() > 0) {
+      if (line.length() > 0)
+      {
          for (int c = 0; (line.charAt(c) == ' ') && (c < line.length() - 1); c++)
          {
             space_count++;
@@ -148,7 +152,8 @@ public class Diva
       return space_count;
    }
 
-   void CheckBinaryOpSpaces() {
+   void CheckBinaryOpSpaces()
+   {
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
       Pattern BinOpPat = Pattern.compile(
@@ -203,11 +208,13 @@ public class Diva
             HandleBinOpErr(BinaryErrorString);
          }
       }
+
+      AppendToReport();
    }
 
    private void HandleBinOpErr(String binaryErrorString)
    {
-      this.AppendToReport(binaryErrorString);
+      AppendToReport(binaryErrorString);
       this.NumErrors++;
    }
 
@@ -235,11 +242,11 @@ public class Diva
    {
       if (this.NumErrors > 0)
       {
-         this.AppendToReport("Total Error Count:  " + this.NumErrors);
+         AppendToReport("Total Error Count:  " + this.NumErrors);
       }
       else
       {
-         this.AppendToReport("                                 .''.\n" +
+         AppendToReport("                                 .''.\n" +
                "       .''.             *''*    :_\\/_:     . \n" +
                "      :_\\/_:   .    .:.*_\\/_*   : /\\ :  .'.:.'.\n" +
                "  .''.: /\\ : _\\(/_  ':'* /\\ *  : '..'.  -=:o:=-\n" +

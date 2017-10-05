@@ -7,7 +7,8 @@ package tests._operators;
 class Bob_Operators
 {
 
-   public static void main(String args[]){
+   public static void main(String args[])
+   {
 
       int[] list = {1,3,4,5,2,6,7,0};
       int temp;
@@ -15,9 +16,8 @@ class Bob_Operators
       for(int pass = 0; pass < (list.length-1); pass++){
          int smallestValueIndex = pass;
          for(int index = pass+1; index < list.length; index++){
-            if(list[smallestValueIndex] > list[index]){
+            if(list[smallestValueIndex] > list[index])
                smallestValueIndex = index;
-            }
          }
          temp = list[pass];
          list[pass] = list[smallestValueIndex];
