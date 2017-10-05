@@ -8,15 +8,18 @@ import java.util.ArrayList;
  4 errors should be found in this file at lines 13, 20, 26, and 34
  */
 
-public class trevor_indent {
+public class trevor_indent
+{
 
    private static ArrayList<Integer> listy = new ArrayList<>();
 
-public String helloWorld( String name) {
+public String helloWorld( String name)
+{
    return "Hello World and " + name;
 }
 
-   public static void loopListy( int  numberOfLoops) {
+   public static void loopListy( int  numberOfLoops)
+   {
       if ( numberOfLoops == 0 || numberOfLoops <= 0)
       {
       System.out.println( "No loops to be done!!");

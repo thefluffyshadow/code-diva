@@ -1,7 +1,9 @@
 import java.io.IOException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 /*
 * Programmer:         Zachary Champion
@@ -12,7 +14,8 @@ import java.util.List;
 public class Diva
 {
    private String Filename;
-   private List<String> FileContents;
+   private String[] FileHeader;
+   private String[] FileContents;
    private int NumErrors;
    private String Report;
    private boolean Diva_Tracer;
@@ -21,7 +24,15 @@ public class Diva
    {
       this.Filename = filename;
       this.Diva_Tracer = Tracer;
-      this.Report = "Report for " + this.Filename + ":" + "\n\n";
+   }
+
+   private void StartHeader()
+   {
+      this.Report = "";
+
+      AppendToReport("Style Report by Zachary Champion\n" +
+                     "Test Program Author:  " + FileHeader[1] + "\n" +
+                     "Error(s) Checked:     " + FileHeader[2] + "\n");
    }
 
    void ReadJava()
@@ -30,23 +41,39 @@ public class Diva
 
       try
       {
-         this.FileContents = Files.readAllLines(Paths.get(this.Filename));
+         // Just read the entire file into a temporary string and split it into parts.
+         // Split it by a regex that looks for /* or */ markers.
+         String RawFile = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
+         String[] RawFileArray = RawFile.split("\\/\\*|\\*\\/");
 
-
-         if (this.Diva_Tracer)
+         try
          {
-            System.out.println("...file read success.");
-
-            for (String line : this.FileContents)
-            {
-               System.out.println(line);
-            }
+            // Assign each part to the header and the contents of the file according to the assignment specs.
+            this.FileHeader = RawFileArray[1].split("\\n");  // Take the second part - that is, after the header comment starts.
+            this.FileContents = RawFileArray[2].split("\\n");
          }
+         catch (ArrayIndexOutOfBoundsException e)
+         {
+            System.out.println(RawFile);
+            System.exit(8);
+         }
+
+         StartHeader();
       }
       catch (IOException e)
       {
-         System.out.println("...File read failed.");
          e.printStackTrace();
+         System.exit(0);
+      }
+
+      if (this.Diva_Tracer)
+      {
+         System.out.println("...file read success.");
+
+         for (String line : this.FileContents)
+         {
+            System.out.println(line);
+         }
       }
    }
 
@@ -54,10 +81,10 @@ public class Diva
    {
       DeclareCheckerMethod("CheckOptCurlyBraces");
 
-      for (int ln = 0; ln < this.FileContents.size() - 1; ln++)
+      for (int ln = 0; ln < this.FileContents.length - 1; ln++)
       {
-         String proc_line = FileContents.get(ln).trim().toLowerCase();
-         String proc_next_line = FileContents.get(ln + 1).trim().toLowerCase();
+         String proc_line = FileContents[ln].trim().toLowerCase();
+         String proc_next_line = FileContents[ln + 1].trim().toLowerCase();
 
          if ((proc_line.startsWith("if") || proc_line.startsWith("else") || proc_line.startsWith("for") ||
                proc_line.startsWith("while"))
@@ -67,8 +94,7 @@ public class Diva
                (!proc_line.endsWith("{")))
          {
             this.NumErrors++;
-            int error_line = ln + 1;
-            this.AppendToReport("Optional brace missing from line " + error_line);
+            this.AppendToReport("Optional brace missing from line " + (ln + 1));
          }
       }
 
@@ -78,77 +104,101 @@ public class Diva
    void CheckBlockIndentation()
    {
       DeclareCheckerMethod("CheckBlockIndentation");
+
+      int properIndent = 0;
+
+      for (int ln = 0; ln < this.FileContents.length; ln++)
+      {
+         if (countLeadingSpaces(this.FileContents[ln]) != properIndent
+               && this.FileContents[ln].length() > 0)
+         {
+            this.AppendToReport("Improper indentation at line " + (ln + 1) + ".");
+            this.NumErrors++;
+         }
+
+         if (this.FileContents[ln].contains("{"))
+         {
+            properIndent += 3;
+         }
+         else if (this.FileContents[ln].contains("{"))
+         {
+            properIndent -= 3;
+         }
+      }
+   }
+
+   private int countLeadingSpaces(String line)
+   {
+      int space_count = 0;
+
+      if (line.length() > 0) {
+         for (int c = 0; (line.charAt(c) == ' ') && (c < line.length() - 1); c++)
+         {
+            space_count++;
+         }
+      }
+      else
+      {
+         return 0;
+      }
+
+      return space_count;
    }
 
    void CheckBinaryOpSpaces() {
-      DeclareCheckerMethod("CheckBinaryOpSpaces");
-
-      for (int ln = 0; ln < this.FileContents.size(); ln++) {
-         String proc_line = FileContents.get(ln).trim().toLowerCase();
-
-         if (proc_line.contains("+"))
-         {
-            // Do the things for the + operator.
-         }
-         else if (proc_line.contains("-"))
-         {
-            // Do the thing
-         }
-         else if (proc_line.contains("*"))
-         {
-            // Things go here.
-         }
-         else if (proc_line.contains("/"))
-         {
-            // Dividing it all up!
-         }
-         else if (proc_line.contains("%"))
-         {
-            // Mods make the game.
-         }
-         else
-         {
-            // The line supposedly has no errors in it. Is this case necessary?
-         }
-         // Further postulation: could this if tree be a case statement?
-//         if ((proc_line.contains("+") || proc_line.contains("-") || proc_line.contains("*") || proc_line.contains("/"))) {
-//            int binoperr = 0;  // Counts for multiple errors on one line.
-//            int index = 1;
+//      // TODO: BROKEN
+//      DeclareCheckerMethod("CheckBinaryOpSpaces");
 //
-//            // Searches the string for all instances of +, -, *, /, or %.
-//            while (index > 0)  // index returns -1 if there's no match found.
-//            {
-//               // Checks the instance of an operator to see if it's a style violation
-//               if (((proc_line.charAt(index - 1) != ' ') || (proc_line.charAt(index + 1) != ' '))
-//                     &&
-//                     !((proc_line.charAt(index - 1) == '/') || (proc_line.charAt(index + 1) == '/') ||
-//                           (proc_line.charAt(index - 1) == '+') || (proc_line.charAt(index + 1) == '+') ||
-//                           (proc_line.charAt(index - 1) == '-') || (proc_line.charAt(index + 1) == '-')))
-//               {
-//                  binoperr++;
-//               }
+//      for (int ln = 0; ln < this.FileContents.length; ln++) {
+//         String proc_line = FileContents[ln].trim().toLowerCase();
+//         String BinaryErrorString = "Binary infix operator missing space(s) on line " + (ln + 1) + ".";
 //
-//               if (proc_line.indexOf("+", index + 1) < index) {
-//                  index = proc_line.indexOf("+", index + 1);
-//               } else if (proc_line.indexOf("-", index + 1) < index) {
-//                  index = proc_line.indexOf("-", index + 1);
-//               } else if (proc_line.indexOf("*", index + 1) < index) {
-//                  index = proc_line.indexOf("*", index + 1);
-//               } else if (proc_line.indexOf("/", index + 1) < index) {
-//                  index = proc_line.indexOf("/", index + 1);
-//               } else if (proc_line.indexOf("%", index + 1) < index) {
-//                  index = proc_line.indexOf("%", index + 1);
-//               }
 //
-//               if (binoperr > 0) {
-//                  // After the whole line has been checked, adds the results to the report.
-//                  this.AppendToReport(binoperr + " binary op(s) missing spaces on either side on line " + ln + ".");
-//                  this.NumErrors += binoperr;
-//               }
-//            }
-//
+//         if (((proc_line.indexOf("+") > 0) && proc_line.indexOf("+") < proc_line.length())
+//               && (!(proc_line.charAt(proc_line.indexOf("+") - 1) == ' ')
+//               || !(proc_line.charAt(proc_line.indexOf("+") + 1) == ' '))
+//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '+')   // Check to make sure it's not a unary op,
+//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '+'))  // such as num++.
+//         {
+//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
 //         }
-      }
+//         else if (((proc_line.indexOf("-") > 0) && proc_line.indexOf("-") < proc_line.length())
+//               && (!(proc_line.charAt(proc_line.indexOf("-") - 1) == ' ')
+//               || !(proc_line.charAt(proc_line.indexOf("-") + 1) == ' '))
+//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '-')   // Check to make sure it's not a unary op,
+//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '-'))  // such as num--.
+//         {
+//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
+//         }
+//         else if (((proc_line.indexOf("*") > 0) && proc_line.indexOf("*") < proc_line.length())
+//               && (!(proc_line.charAt(proc_line.indexOf("*") - 1) == ' ')
+//               || !(proc_line.charAt(proc_line.indexOf("*") + 1) == ' '))
+//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '/')   // Check to make sure it's not a multi-line
+//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '/'))  // comment marker.
+//         {
+//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
+//         }
+//         else if (((proc_line.indexOf("/") > 0) && proc_line.indexOf("/") < proc_line.length())
+//               && (!(proc_line.charAt(proc_line.indexOf("/") - 1) == ' ')
+//               || !(proc_line.charAt(proc_line.indexOf("/") + 1) == ' '))
+//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '/')   // Check to make sure it's not a single
+//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '/'))  // line comment marker.
+//         {
+//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
+//         }
+//         else if (((proc_line.indexOf("%") > 0) && proc_line.indexOf("%") < proc_line.length())
+//               && (!(proc_line.charAt(proc_line.indexOf("%") - 1) == ' ')
+//               || !(proc_line.charAt(proc_line.indexOf("%") + 1) == ' ')))
+//         {
+//            HandleBinOpErr(BinaryErrorString);
+//         }
+//      }
+   }
+
+   private void HandleBinOpErr(String binaryErrorString)
+   {
+      this.AppendToReport(binaryErrorString);
+      this.NumErrors++;
    }
 
    void CheckBraceAlignment()
