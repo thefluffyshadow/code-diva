@@ -1,5 +1,3 @@
-package tests._indent;
-
 /*
 Chris Spaulding
 Indentations
@@ -7,6 +5,8 @@ There should be an indent on the main method
 and and indent on the for loop
 binary opperators no space on line 12 and 16
 */
+package tests._indent;
+
 public class Chris_Indents 
 {
 public static void main( String[] args)

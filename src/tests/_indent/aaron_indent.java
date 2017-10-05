@@ -1,14 +1,11 @@
 /*
  * Aaron Loomis
  * Block Indentation
- */
-
-/*
 No curlys contained after a single statement if statement.
  */
+
 public class aaron_indent
 {
-
     public static void main(String[]args)
     {
         aaron_indent test1 = new aaron_indent();
@@ -28,4 +25,3 @@ public class aaron_indent
         return oppositeNum;
     }
 }
-

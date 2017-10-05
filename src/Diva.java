@@ -1,17 +1,17 @@
 /*
 * Programmer:         Zachary Champion
 * Project:            Project Code Diva
-* Date Last Updated:  2 October 2017
+* Date Last Updated:  5 October 2017
 */
-import java.io.IOException;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Diva
 {
-   private String Filename;
    private String[] FileHeader;
    private int FileHeaderLen;
    private String[] FileContents;
@@ -21,46 +21,30 @@ public class Diva
 
    Diva (String filename, boolean Tracer)
    {
-      this.Filename = filename;
       this.Diva_Tracer = Tracer;
-   }
 
-   private void StartHeader()
-   {
-      this.Report = "";
-
-      AppendToReport("Style Report by Zachary Champion\n" +
-                     "Test Program Author:  " + FileHeader[1] + "\n" +
-                     "Error(s) Checked:     " + FileHeader[2] + "\n");
-   }
-
-   void ReadJava()
-   {  // Reads into the class variable the entirety of the file contents so we don't have to do it again.
+      // Reads into the class variable the entirety of the file contents so we don't have to do it again.
       DeclareCheckerMethod("ReadJava");
 
       try
       {
          // Just read the entire file into a temporary string and split it into parts.
          // Split it by a regex that looks for /* or */ markers.
-         String RawFile = new Scanner(new File(this.Filename)).useDelimiter("\\Z").next();
-         String[] RawFileArray = RawFile.split("\\/\\*|\\*\\/");
+         String RawFile = new Scanner(new File(filename)).useDelimiter("\\Z").next();
+         String[] RawFileArray = RawFile.split("\\Q/*\\E|\\Q*/\\E");
 
-         try
-         {
-            // Assign each part to the header and the contents of the file according to the assignment specs.
-            this.FileHeader = RawFileArray[1].split("\\n");    // Take the second part - that is, after the header
-                                                                  // comment starts.
-            this.FileContents = RawFileArray[2].split("\\n");
-            this.FileHeaderLen = this.FileHeader.length + 2;      // Keeps track of how long the header in the original
-                                                                  // file is so that Diva can give accurate line numbers
-         }
-         catch (ArrayIndexOutOfBoundsException e)
-         {
-            e.printStackTrace();
-            System.exit(8);
-         }
+         // Assign each part to the header and the contents of the file according to the assignment specs.
+         this.FileHeader = RawFileArray[1].split("\\n");    // Take the second part - that is, after the header
+         // comment starts.
+         this.FileContents = RawFileArray[2].split("\\n");
+         this.FileHeaderLen = this.FileHeader.length + 2;   // Keeps track of how long the header in the original
+         // file is so that Diva can give accurate line numbers
 
          StartHeader();
+      } catch (ArrayIndexOutOfBoundsException e)
+      {
+         e.printStackTrace();
+         System.exit(8);
       }
       catch (IOException e)
       {
@@ -77,6 +61,15 @@ public class Diva
             System.out.println(line);
          }
       }
+   }
+
+   private void StartHeader()
+   {
+      this.Report = "";
+
+      AppendToReport("Style Report by Zachary Champion\n" +
+            "Test Program Author:  " + FileHeader[1] + "\n" +
+            "Error(s) Checked:     " + FileHeader[2] + "\n");
    }
 
    void CheckOptCurlyBraces()
@@ -160,45 +153,7 @@ public class Diva
 
       for (int ln = 0; ln < this.FileContents.length; ln++) {
          String BinaryErrorString = "Binary infix operator missing space(s) on line " + GetLnNum(ln) + ".";
-//
-//         if (((proc_line.indexOf("+") > 0) && proc_line.indexOf("+") < proc_line.length())
-//               && (!(proc_line.charAt(proc_line.indexOf("+") - 1) == ' ')
-//               || !(proc_line.charAt(proc_line.indexOf("+") + 1) == ' '))
-//               && !(proc_line.charAt(proc_line.indexOf("+") - 1) == '+')   // Check to make sure it's not a unary op,
-//               && !(proc_line.charAt(proc_line.indexOf("+") + 1) == '+'))  // such as num++.
-//         {
-//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
-//         }
-//         else if (((proc_line.indexOf("-") > 0) && proc_line.indexOf("-") < proc_line.length())
-//               && (!(proc_line.charAt(proc_line.indexOf("-") - 1) == ' ')
-//               || !(proc_line.charAt(proc_line.indexOf("-") + 1) == ' '))
-//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '-')   // Check to make sure it's not a unary op,
-//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '-'))  // such as num--.
-//         {
-//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
-//         }
-//         else if (((proc_line.indexOf("*") > 0) && proc_line.indexOf("*") < proc_line.length())
-//               && (!(proc_line.charAt(proc_line.indexOf("*") - 1) == ' ')
-//               || !(proc_line.charAt(proc_line.indexOf("*") + 1) == ' '))
-//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '/')   // Check to make sure it's not a multi-line
-//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '/'))  // comment marker.
-//         {
-//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
-//         }
-//         else if (((proc_line.indexOf("/") > 0) && proc_line.indexOf("/") < proc_line.length())
-//               && (!(proc_line.charAt(proc_line.indexOf("/") - 1) == ' ')
-//               || !(proc_line.charAt(proc_line.indexOf("/") + 1) == ' '))
-//               && !(proc_line.charAt(proc_line.indexOf("/") - 1) == '/')   // Check to make sure it's not a single
-//               && !(proc_line.charAt(proc_line.indexOf("/") + 1) == '/'))  // line comment marker.
-//         {
-//            HandleBinOpErr(BinaryErrorString);  // Append stuff to the report and increase the error count.
-//         }
-//         else if (((proc_line.indexOf("%") > 0) && proc_line.indexOf("%") < proc_line.length())
-//               && (!(proc_line.charAt(proc_line.indexOf("%") - 1) == ' ')
-//               || !(proc_line.charAt(proc_line.indexOf("%") + 1) == ' ')))
-//         {
-//            HandleBinOpErr(BinaryErrorString);
-//         }
+
          Matcher Clouseau = BinOpPat.matcher(this.FileContents[ln]);
 
          while (Clouseau.find())
@@ -232,6 +187,18 @@ public class Diva
    void CheckMaxLineLength()
    {
       DeclareCheckerMethod("CheckMaxLineLength");
+
+      int MaxLineLength = 120;
+
+      for (int ln = 0; ln < this.FileContents.length; ln++)
+      {
+         if (FileContents[ln].length() > MaxLineLength)
+         {
+            AppendToReport("Line " + ln + " is " + (this.FileContents[ln].length() - MaxLineLength) + " characters" +
+                  " too long.");
+            this.NumErrors++;
+         }
+      }
    }
 
    private void FinReport()

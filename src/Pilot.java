@@ -48,9 +48,6 @@ public class Pilot
       {
          Diva NewDiva = new Diva(args[a], Tracer);
 
-         // Read the code file and store it in NewDiva.
-         NewDiva.ReadJava();
-
          // Do all the checks on the code file.
          NewDiva.CheckOptCurlyBraces();
          NewDiva.CheckBlockIndentation();
