@@ -89,7 +89,7 @@ public class Diva
                (!proc_line.endsWith("{")))
          {
             this.NumErrors++;
-            AppendToReport("Optional brace missing from line " + GetLnNum(ln + 1));
+            AppendToReport("Optional curly brace missing from line " + GetLnNum(ln + 1));
          }
       }
    }
@@ -145,6 +145,9 @@ public class Diva
 
    void CheckBinaryOpSpaces()
    {
+      /*
+      *
+      */
       DeclareCheckerMethod("CheckBinaryOpSpaces");
 
       Pattern BinOpPat = Pattern.compile(
@@ -165,6 +168,7 @@ public class Diva
 
    private void HandleBinOpErr(String binaryErrorString)
    {
+      // Helper function to CheckBinaryOpSpaces that handles appending to the style error report and tallying the error.
       AppendToReport(binaryErrorString);
       this.NumErrors++;
    }
