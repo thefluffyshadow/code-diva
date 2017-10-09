@@ -1,0 +1,21 @@
+/*
+James Thomas
+Multiple Errors
+This program also obviously has multiple errors
+*/
+
+public class Dog
+{
+public static void main(String[] args)
+{
+int x, y;
+x = 2;
+y = 4;
+double g, h = 9;
+g = 77;
+float a, b = 6.0F, c = 8.56F;
+a = 77.00F;
+char m = 'n';
+System.out.println(x+y);
+}
+}

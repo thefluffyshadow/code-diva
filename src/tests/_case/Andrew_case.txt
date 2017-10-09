@@ -1,0 +1,32 @@
+/*
+Andrew Hodder
+
+This heinous little beast has case issues on line 16, 21, 26, 28
+*/
+
+public class Andrew_case
+{
+  public static void main(String[] args)
+  {
+    DO_Something_Amazing();
+    wish_upon_a_star();
+    new i_am_a_poorly_named_class().THAT_DOES_NOTHING();
+  }
+
+  private static void DO_Something_Amazing()
+  {
+    System.out.println("I cast magic missle at the darkness");
+  }
+
+  private static void wish_upon_a_star()
+  {
+    System.out.println("I wish I had my two front teeth");
+  }
+
+  public static class i_am_a_poorly_named_class
+  {
+    public void THAT_DOES_NOTHING()
+    {
+    }
+  }
+}

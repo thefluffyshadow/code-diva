@@ -1,0 +1,26 @@
+
+/*
+
+James Thomas
+
+case errors
+
+There are 3 errors.
+
+*/
+
+public class chicken
+
+{
+
+   private final String Sound = "bock";
+
+   public void MAKE_SOUND ()
+
+   {
+
+      System.out.println(Sound);
+
+   }
+
+}

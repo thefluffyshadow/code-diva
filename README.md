@@ -36,7 +36,7 @@ _One of these can be exempted._
 * Code file validation - Make sure that the file passed to the Diva actually is a valid java file.
 
 ## Table of Contents
-Pilot.java - the code that takes in arguments and spawns a Diva for each filename.  
+Diva.java - the code that takes in arguments and spawns a Diva for each filename.  
 Diva.java  - the code that actually checks the code of the files passed in.
 
 ## Notes on the Test Programs:

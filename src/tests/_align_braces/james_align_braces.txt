@@ -1,0 +1,19 @@
+/*
+
+James Thomas
+
+Brace alignment
+
+There are two errors.
+
+*/
+
+public class Chicken
+
+  {
+
+   public static void main(String[] args)
+
+{
+
+      System.out.println("I love chicken!");}}
