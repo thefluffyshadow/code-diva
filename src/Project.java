@@ -51,11 +51,11 @@ public class Project
          StartReport();
       } catch (ArrayIndexOutOfBoundsException e)
       {
-         e.printStackTrace();
+         System.out.println("File \"" + filename + "\" does not have a proper header.");
          System.exit(1);
       } catch (FileNotFoundException e)
       {
-         System.out.println("File \"" + filename + "\" not found");
+         System.out.println("File \"" + filename + "\" not found.");
          System.exit(1);
       }
 
@@ -105,6 +105,8 @@ public class Project
             ReportError("Optional brace missing.", GetLnNum(ln + 1));
          }
       }
+
+      AppendToReport();
    }
 
    void CheckBlockIndentation()
@@ -292,8 +294,41 @@ public class Project
    }
 
    void CheckBlankLines()
+   /*
+   * Checks to find errors of the following condition:
+   * There should be exactly one blank line between methods, between the class header and declarations, and between the
+   * end of the declarations and the first method header.
+   */
+   // TODO: Fix. It's not finding the class start that should be throwing an error in Sang's test file.
    {
       DeclareCheckerMethod("CheckBlankLines");
+
+      // Create a regular expression pattern that will recognize method headers
+      Pattern methodDecPat = Pattern.compile("[public|protected|private|static|abstract|final|native|synchronized|voi" +
+            "d| *]+[\\w\\<\\>\\[\\]]+\\s(\\w+) *\\([^\\)]*\\) *(\\{?|[^;])");
+      Pattern classDecPat = Pattern.compile("[public|protected|private|static|abstract| ]+class +(\\w+)");
+
+      for (int ln = 0; ln < this.FileContents.length; ln++)
+      {
+         // Create the regular expression matcher for each line of the file.
+         Matcher methodDecMatch = methodDecPat.matcher(this.FileContents[ln]);
+         Matcher classDecMatch = classDecPat.matcher(this.FileContents[ln]);
+
+         // Check to see if the line looks like a method header or a class declaration and
+         // does not have a blank line before it.
+         if ((ln == 0) || (this.FileContents[ln - 1].trim().length() > 0))
+         {
+            if (methodDecMatch.find() && !this.FileContents[ln].contains("new"))
+            {
+               ReportError("No blank line before a method.", GetLnNum(ln));
+            } else if (classDecMatch.find())
+            {
+               ReportError("No blank line before a class.", GetLnNum(ln));
+            }
+         }
+      }
+
+      AppendToReport();
    }
 
    private void FinReport()

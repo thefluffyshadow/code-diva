@@ -2,10 +2,8 @@
    Sang Nguyen
    Blank Lines
    2 Errors on line 16 and line 28
-*/
 
-
-/** This program is used to calculate the perimeter, semi-perimeter,
+    This program is used to calculate the perimeter, semi-perimeter,
     and the area of a triangle using method.
 */
 import java.util.Scanner;

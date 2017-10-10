@@ -1,8 +1,8 @@
-
 /*
 James Thomas
 Blank line errors
 There are 3 errors.
+*/
 public class Pizza
 {
    public static int answer()

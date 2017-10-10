@@ -1,8 +1,9 @@
 /*
-* Testing for "blank line" style errors
+* Zachary Champion
+* Blank Lines
 * Errors on lines:
-* 29 - Missing blank line between methods, method header is somehow on the same line as the terminating curly brace...
-* ...for the last method.
+* 28 - Missing blank line between methods, method header is somehow on the same line as the terminating curly brace
+*      for the last method.
 * 36 - Missing blank line between methods.
 * 44 - Missing blank line at end of file
 */
