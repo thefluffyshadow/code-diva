@@ -321,7 +321,8 @@ public class Project
             if (methodDecMatch.find() && !this.FileContents[ln].contains("new"))
             {
                ReportError("No blank line before a method.", GetLnNum(ln));
-            } else if (classDecMatch.find())
+            }
+            else if (classDecMatch.find())
             {
                ReportError("No blank line before a class.", GetLnNum(ln));
             }
