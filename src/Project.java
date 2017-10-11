@@ -299,14 +299,14 @@ public class Project
    * There should be exactly one blank line between methods, between the class header and declarations, and between the
    * end of the declarations and the first method header.
    */
-   // TODO: Fix. It's not finding the class start that should be throwing an error in Sang's test file.
    {
       DeclareCheckerMethod("CheckBlankLines");
 
       // Create a regular expression pattern that will recognize method headers
       Pattern methodDecPat = Pattern.compile("[public|protected|private|static|abstract|final|native|synchronized|voi" +
             "d| *]+[\\w\\<\\>\\[\\]]+\\s(\\w+) *\\([^\\)]*\\) *(\\{?|[^;])");
-      Pattern classDecPat = Pattern.compile("[public|protected|private|static|abstract| ]+class +(\\w+)");
+      Pattern classDecPat = Pattern.compile("[public|protected|private|static|abstract| ]+class\\s+(\\w+)");
+      Pattern classVarPat = Pattern.compile("(int|double|float|long|short|String|char) +[\\w+](= +.+)?;");  // TODO
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
@@ -318,7 +318,8 @@ public class Project
          // does not have a blank line before it.
          if ((ln == 0) || (this.FileContents[ln - 1].trim().length() > 0))
          {
-            if (methodDecMatch.find() && !this.FileContents[ln].contains("new"))
+            if (methodDecMatch.find() && !(this.FileContents[ln].contains("new") ||
+                                           this.FileContents[ln].contains("public static void main")))
             {
                ReportError("No blank line before a method.", GetLnNum(ln));
             }

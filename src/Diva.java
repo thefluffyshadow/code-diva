@@ -74,8 +74,8 @@ public class Diva
          {
             System.out.println(" > " + arg);
          }
-
-      } else
+      }
+      else
       {
          System.out.println("...no args passed.");
       }

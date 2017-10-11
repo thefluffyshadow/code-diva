@@ -12,8 +12,9 @@ import java.util.Scanner;
 
 public class zachary_blank_lines
 {
-        int x;
-        String s;
+   int x;
+   String s;
+   double mult = 6;
 
    public static void main(String[] args)
    {
