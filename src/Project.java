@@ -1,7 +1,14 @@
 /*
-* Programmer:         Zachary Champion
-* Project:            Project Code Diva
-* Date Last Updated:  9 October 2017
+* Programmer:  Zachary Champion
+* Project:     Project Code Diva
+* File Description:
+* Checks a single java code file for violations of any of the following code style guidelines:
+* Optional curly braces are required.
+* Curly braces are on a line by themselves.
+* Indentation should be in increments of 3 spaces, and code bodies (loop, method, etc) should be one increment indented.
+* Binary math operators (+, -, *, /, and %) should have one exactly one space on each side of them.
+* There should be exactly one blank line between methods, between declarations and methods, and between the class header
+*  and declarations.
 */
 
 import java.io.File;
@@ -18,9 +25,7 @@ public class Project
    private String[] FileContents;
    private int NumErrors;
    private String Report;
-   private static final Pattern methodDecPat =
-         Pattern.compile("[\\w *]+[\\w<>\\[\\]]+\\s(\\w+) *\\([^)]*\\) *(\\{?|[^;])");
-   private static final Pattern classDecPat = Pattern.compile("[\\w\\s+]+class\\s+(\\w+)");
+   public boolean valid_file = true;
 
    Project(String filename)
    /*
@@ -39,7 +44,6 @@ public class Project
          String RawFile = new Scanner(new File(filename)).useDelimiter("\\Z").next();
          String[] RawFileArray = RawFile.split("\\Q/*\\E|\\Q*/\\E");
 
-
          // Assign each part to the header and the contents of the file according to the assignment specs.
          this.FileHeader = RawFileArray[1].split("\\n");    // Take the second part - that is, after the header
          // comment starts.
@@ -50,12 +54,15 @@ public class Project
          StartReport();
       } catch (ArrayIndexOutOfBoundsException e)
       {
-         System.out.println("File \"" + filename + "\" does not have a proper header.");
-         System.exit(1);
+         System.out.println("================================================================\n\n" +
+               "File \"" + filename + "\" has improper documentation format.\nPlease collapse all " +
+               "comments into a single header comment surrounded by /* and */\n");
+         this.valid_file = false;
       } catch (FileNotFoundException e)
       {
-         System.out.println("File \"" + filename + "\" not found.");
-         System.exit(1);
+         System.out.println("================================================================\n" +
+               "\nFile \"" + filename + "\" not found.\n");
+         this.valid_file = false;
       }
    }
 
@@ -123,10 +130,12 @@ public class Project
             ReportError("Line contains the evil TAB for indent.", GetLnNum(ln));
          }
 
-         // Otherwise, check if the indentation is the proper number of spaces.
+         // Otherwise, check if the indentation is the proper number of spaces and is not the continuation of a
+         // statement on a previous line.
          else if (foundIndent != properIndent
                && this.FileContents[ln].trim().length() > 0
-               && this.FileContents[ln].trim().startsWith(""))
+               && this.FileContents[ln].trim().startsWith("")
+               && (ln != 0 && this.FileContents[ln - 1].trim().endsWith(";")))
          {
             ReportError("Improper indentation - " + foundIndent + " spaces found, should be "
                   + properIndent + ".", GetLnNum(ln));
@@ -236,69 +245,12 @@ public class Project
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
-         if (FileContents[ln].length() > MaxLineLength)
+         if (FileContents[ln].length() - 1 > MaxLineLength)
          {
             ReportError("Line is too long (" +
-                  this.FileContents[ln].length() + " chars > " + MaxLineLength + ").", GetLnNum(ln));
+                  (this.FileContents[ln].length() - 1) + " chars > " + MaxLineLength + ").", GetLnNum(ln));
          }
       }
-   }
-
-   void CheckNameCase()
-   /* TODO
-   * Checks for violations of the following conditions:
-   * Class names should begin with an uppercase letter.
-   * Method names should begin with a lowercase letter.
-   * Constants (you know, constant variables) are all uppercase.
-   */
-   {
-      for (int ln = 0; ln < this.FileContents.length; ln++)
-      {
-         // To find class names, use the same regex as in the blank lines function to search the file.
-         // Then, to check if it doesn't have an uppercase letter for its first character, use char.toUpperCase()
-         Matcher ClassMatch = classDecPat.matcher(this.FileContents[ln]);
-
-         // This whole mess detects if the constant defines a string. If so, it separates the string out to make sure
-         // that it doesn't throw off the detection by including the word "final" in the string.
-         String[] const_decl;
-
-         if (this.FileContents[ln].contains("\""))
-         {
-            const_decl = this.FileContents[ln].trim().split("\"")[0].split(" ");
-         }
-         else
-         {
-            const_decl = this.FileContents[ln].trim().split(" ");
-         }
-
-         // Check if the constants are all uppercase.
-         // The if checks if the line has the word final (not in a string).
-         for (String word : const_decl)
-         {
-            if (word.equals("final"))
-            {
-               // Splits the line by " and then only searches the first section for a word that's uppercase.
-               // Since no word except for the constant name can be uppercase, if a word is all uppercase, then the
-               // constant is all uppercase. Otherwise, it's not.
-               if (!uppercase_in_string(this.FileContents[ln].trim().split("\"")[0].split(" ")))
-               {
-                  ReportError("Constant needs to be in all uppercase.", GetLnNum(ln));
-               }
-            }
-         }
-      }
-   }
-
-   private boolean uppercase_in_string(String[] decl) {
-      // Checks if any word in the line is all in uppercase.
-      for (String word : decl)
-      {
-         if (word.equals(word.toUpperCase()))
-         {
-            return true;
-         }
-      }
-      return false;
    }
 
    void CheckBlankLines()
@@ -308,13 +260,18 @@ public class Project
    * end of the declarations and the first method header.
    */
    {
+      // Pattern that matches method declarations - matches line fragment
+      // I'm sorry for the spelling error - it was that or have the method pattern name be 1 char longer than the others
+      Pattern methdDecPat = Pattern.compile("[\\w *]+[\\w<>\\[\\]]+\\s(\\w+) *\\([^)]*\\) *(\\{?|[^;])");
+      // Pattern that matches class declarations - matches line fragment
+      Pattern classDecPat = Pattern.compile("[\\w\\s+]+class\\s+(\\w+)");
       // Pattern that recognizes variable declarations - matches whole line
       Pattern classVarPat = Pattern.compile("(\\w+ )+(\\w( += +[^;]+)?(, )*)+;");
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
          // Create the regular expression matchers for each line of the file.
-         Matcher methodDecMatch = methodDecPat.matcher(this.FileContents[ln]);
+         Matcher methodDecMatch = methdDecPat.matcher(this.FileContents[ln]);
          Matcher classDecMatch = classDecPat.matcher(this.FileContents[ln]);
          Matcher classVarMatch = classVarPat.matcher(this.FileContents[ln]);
 
@@ -382,9 +339,10 @@ public class Project
                "    .-'|  _.|  |    ||   '-__  |   |  |    ||      |\n" +
                "    |' | |.    |    ||       | |   |  |    ||      |\n" +
                " ___|  '-'     '    \"\"       '-'   '-.'    '`      |____\n" +
-               "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+               "jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                "                       NO ERRORS\n" +
-               "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+               "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+               "                                       Art by Joan Stark"
          );
       }
    }
@@ -396,9 +354,12 @@ public class Project
 
    void PrintReport()
    {
-      this.FinReport();
-      System.out.println("================================================================\n");
-      System.out.println(this.Report);
+      if (this.valid_file)
+      {
+         this.FinReport();
+         System.out.println("================================================================\n");
+         System.out.println(this.Report);
+      }
    }
 
    private void ReportError(String errortype, int line)

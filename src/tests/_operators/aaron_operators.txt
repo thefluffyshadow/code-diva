@@ -15,9 +15,9 @@ public class TestClass1
     {
         int oppositeNum;
         if(firstNumber < n /2)
-			oppositeNum = firstNumber + (n / 2);
+			oppositeNum = firstNumber +  (n / 2);
         else
-			oppositeNum = firstNumber - (n / 2);
+			oppositeNum = firstNumber  - (n / 2);
 
         return oppositeNum;
     }

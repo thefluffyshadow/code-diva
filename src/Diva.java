@@ -1,37 +1,23 @@
 /*
- * Programmer:         Zachary Champion
- * Project:            Code Diva
- * Date Last Updated:  9 October 2017
+ * Programmer: Zachary Champion
+ * Project:    Code Diva
+ * File Description:
+ * Acts as the managing code for Project.java, which has the meat of the checks in it.
+ * Checks any number of code files and prints out the report to summarize any errors found in the code style according
+ * to the style as defined in the project specifications.
  */
 
 public class Diva
 {
-   private static boolean Tracer = false;
-
    public static void main(String[] args)
-
    {
-      int arg_start; // Tells the pilot where the first of the program arguments is in the array.
-
-      // Checks the first arg to see if it turns Tracer on.
-      if ((args.length > 0) && (args[0].toLowerCase().equals("tracer")))
-      {
-         Tracer = true;
-         arg_start = 1;
-      }
-      else
-      {
-         arg_start = 0;
-      }
-
       // list all of the passed-in args.
       ListArgs(args);
 
       if (args.length > 0)
       {  // Run the main checker on each file passed in as an argument.
-         AddProjects(args, arg_start);
+         AddProjects(args);
       }
-
       else
       {  // If the user has passed in no arguments, tell them how to.
          System.out.println("No files to inspect. The Code Diva is bored.");
@@ -42,21 +28,23 @@ public class Diva
 
    }
 
-   private static void AddProjects(String[] args, int arg_start)
+   private static void AddProjects(String[] args)
    {
-      for (int a = arg_start; a < args.length; a++)
+      for (String project : args)
       {
-         Project newProject = new Project(args[a]);
+         Project newProject = new Project(project);
 
-         // Do all the checks on the code file.
-         newProject.CheckOptCurlyBraces();
-         newProject.CheckBlockIndentation();
-         newProject.CheckBinaryOpSpaces();
-         newProject.CheckBraceAlignment();
-         newProject.CheckMultipleStatementLines();
-         newProject.CheckMaxLineLength();
-         newProject.CheckNameCase();
-         newProject.CheckBlankLines();
+         if (newProject.valid_file)
+         {
+            // Do all the checks on the code file.
+            newProject.CheckOptCurlyBraces();
+            newProject.CheckBlockIndentation();
+            newProject.CheckBinaryOpSpaces();
+            newProject.CheckBraceAlignment();
+            newProject.CheckMultipleStatementLines();
+            newProject.CheckMaxLineLength();
+            newProject.CheckBlankLines();
+         }
 
          // Print out the Project's findings.
          newProject.PrintReport();
@@ -70,9 +58,9 @@ public class Diva
       {
          System.out.println("Code files specified to check:");
 
-         for (String arg : args)
+         for (int arg = 0; arg < args.length; arg++)
          {
-            System.out.println(" > " + arg);
+            System.out.println((arg + 1) + " > " + args[arg]);
          }
       }
       else

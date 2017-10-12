@@ -1,9 +1,6 @@
 /**
  * Created by aloom on 9/8/2017.
- */
-
-/*
-No curlys contained after a single statement if statement.
+   No curlys contained after a single statement if statement.
  */
 public class TestClass1
 {
