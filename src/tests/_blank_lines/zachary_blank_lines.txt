@@ -2,10 +2,11 @@
 * Zachary Champion
 * Blank Lines
 * Errors on lines:
-* 28 - Missing blank line between methods, method header is somehow on the same line as the terminating curly brace
+* 16 - No blank line before the variable declarations.
+* 19 - No blank line after the variable declarations.
+* 34 - Missing blank line between methods, method header is somehow on the same line as the terminating curly brace
 *      for the last method.
-* 36 - Missing blank line between methods.
-* 44 - Missing blank line at end of file
+* 41 - Missing blank line between methods.
 */
 
 import java.util.Scanner;
@@ -15,16 +16,16 @@ public class zachary_blank_lines
    int x;
    String s;
    double mult = 6;
-
+   int Rows, Columns;
    public static void main(String[] args)
    {
       Scanner GetChoice = new Scanner(System.in);
 
       System.out.print("How many rows do you want? ");
-      int Rows = GetChoice.nextInt();
+      Rows = GetChoice.nextInt();
 
       System.out.print("How many columns do you want? ");
-      int Columns = GetChoice.nextInt();
+      Columns = GetChoice.nextInt();
       System.out.println();
 
       print_header(Columns);

@@ -46,7 +46,7 @@ public class Diva
    {
       for (int a = arg_start; a < args.length; a++)
       {
-         Project newProject = new Project(args[a], Tracer);
+         Project newProject = new Project(args[a]);
 
          // Do all the checks on the code file.
          newProject.CheckOptCurlyBraces();
@@ -56,6 +56,7 @@ public class Diva
          newProject.CheckVariableCase();
          newProject.CheckMultipleStatementLines();
          newProject.CheckMaxLineLength();
+         newProject.CheckNameCase();
          newProject.CheckBlankLines();
 
          // Print out the Project's findings.

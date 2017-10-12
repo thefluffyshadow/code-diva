@@ -16,7 +16,6 @@ public class GameTestClass
    private final String GAME_DATE;
    private final String HOME_TEAM_SCORE;
    private final String GUEST_TEAM_SCORE;
-  
    public GameTestClass(String GAME_ID, String HOME_TEAM_ID,
                String GUEST_TEAM_ID ,String GAME_DATE, String HOME_TEAM_SCORE, 
                String GUEST_TEAM_SCORE) 

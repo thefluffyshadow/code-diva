@@ -13,8 +13,9 @@ public class TriangleMethod
   { 
     double num1, num2, num3;  
     double Area; 
-    double Perimeter; 
-   
+    double Perimeter;
+    int i = 0;
+    
     
     explain();
     
@@ -44,8 +45,7 @@ public static void explain()
    
 public static double getSide() throws  Exception
 {
-   double side;     
-   side = console.nextDouble();
+   double side = console.nextDouble();
    if (side <= 0)
    { 
       System.out.println("This side is invalid");
