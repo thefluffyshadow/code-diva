@@ -18,6 +18,9 @@ public class Project
    private String[] FileContents;
    private int NumErrors;
    private String Report;
+   private static final Pattern methodDecPat =
+         Pattern.compile("[\\w *]+[\\w<>\\[\\]]+\\s(\\w+) *\\([^)]*\\) *(\\{?|[^;])");
+   private static final Pattern classDecPat = Pattern.compile("[\\w\\s+]+class\\s+(\\w+)");
 
    Project(String filename)
    /*
@@ -74,8 +77,6 @@ public class Project
    * statement body should be surrounded by curly braces.
    */
    {
-      DeclareCheckerMethod("CheckOptCurlyBraces");
-
       for (int ln = 0; ln < this.FileContents.length - 1; ln++)
       {
          String proc_line = FileContents[ln].trim().toLowerCase();
@@ -102,8 +103,6 @@ public class Project
    * Uses the { and } characters to mark when the indentation should be increased and decreased, respectively.
    */
    {
-      DeclareCheckerMethod("CheckBlockIndentation");
-
       int properIndent = 0;
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
@@ -171,8 +170,6 @@ public class Project
    * All binary math operators should have exactly one space surrounding them.
    */
    {
-      DeclareCheckerMethod("CheckBinaryOpSpaces");
-
       Pattern BinOpPat = Pattern.compile(
             "[^ \\Q/*+-.\\E][\\Q+-*/%\\E][^\\Q*/+-\\E\\n]|[^\\Q*/+-.\\E][\\Q+-*/%\\E][^ \\Q+-*/=\\E\\n]"
       ); // Heck of a regex, but she works.
@@ -196,8 +193,6 @@ public class Project
    * Their indentation is already checked by CheckBlockIndentation(), so this function does not look for that.
    */
    {
-      DeclareCheckerMethod("CheckBraceAlignment");
-
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
          if (this.FileContents[ln].contains("{") && !this.FileContents[ln].trim().equals("{"))
@@ -212,11 +207,6 @@ public class Project
       }
    }
 
-   void CheckVariableCase()
-   {
-      DeclareCheckerMethod("CheckVariableCase");
-   }
-
    void CheckMultipleStatementLines()
    /*
    * Individual error chosen by me.
@@ -224,8 +214,6 @@ public class Project
    * All lines should contain at most one Java code statement.
    */
    {
-      DeclareCheckerMethod("CheckMultipleStatementLines");
-
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
          String[] split = this.FileContents[ln].split(";", -1);
@@ -244,8 +232,6 @@ public class Project
    * All lines should be at most 120 characters in length.
    */
    {
-      DeclareCheckerMethod("CheckMaxLineLength");
-
       int MaxLineLength = 120;
 
       for (int ln = 0; ln < this.FileContents.length; ln++)
@@ -259,20 +245,60 @@ public class Project
    }
 
    void CheckNameCase()
-   /*
+   /* TODO
    * Checks for violations of the following conditions:
    * Class names should begin with an uppercase letter.
    * Method names should begin with a lowercase letter.
    * Constants (you know, constant variables) are all uppercase.
    */
    {
-      DeclareCheckerMethod("CheckNameCase");
-
       for (int ln = 0; ln < this.FileContents.length; ln++)
       {
-         System.out.print(ln + " ");
+         // To find class names, use the same regex as in the blank lines function to search the file.
+         // Then, to check if it doesn't have an uppercase letter for its first character, use char.toUpperCase()
+         Matcher ClassMatch = classDecPat.matcher(this.FileContents[ln]);
+
+         // This whole mess detects if the constant defines a string. If so, it separates the string out to make sure
+         // that it doesn't throw off the detection by including the word "final" in the string.
+         String[] const_decl;
+
+         if (this.FileContents[ln].contains("\""))
+         {
+            const_decl = this.FileContents[ln].trim().split("\"")[0].split(" ");
+         }
+         else
+         {
+            const_decl = this.FileContents[ln].trim().split(" ");
+         }
+
+         // Check if the constants are all uppercase.
+         // The if checks if the line has the word final (not in a string).
+         for (String word : const_decl)
+         {
+            if (word.equals("final"))
+            {
+               // Splits the line by " and then only searches the first section for a word that's uppercase.
+               // Since no word except for the constant name can be uppercase, if a word is all uppercase, then the
+               // constant is all uppercase. Otherwise, it's not.
+               if (!uppercase_in_string(this.FileContents[ln].trim().split("\"")[0].split(" ")))
+               {
+                  ReportError("Constant needs to be in all uppercase.", GetLnNum(ln));
+               }
+            }
+         }
       }
-      System.out.println();
+   }
+
+   private boolean uppercase_in_string(String[] decl) {
+      // Checks if any word in the line is all in uppercase.
+      for (String word : decl)
+      {
+         if (word.equals(word.toUpperCase()))
+         {
+            return true;
+         }
+      }
+      return false;
    }
 
    void CheckBlankLines()
@@ -282,14 +308,6 @@ public class Project
    * end of the declarations and the first method header.
    */
    {
-      DeclareCheckerMethod("CheckBlankLines");
-
-      // Create a regular expression pattern that will recognize method headers - matches line fragments
-      Pattern methodDecPat = Pattern.compile("[\\w *]+[\\w\\<\\>\\[\\]]+\\s(\\w+) *\\([^\\)]*\\) *(\\{?|[^;])");
-
-      // Pattern that recognizes class declarations - matches line fragments
-      Pattern classDecPat = Pattern.compile("[\\w ]+class\\s+(\\w+)");
-
       // Pattern that recognizes variable declarations - matches whole line
       Pattern classVarPat = Pattern.compile("(\\w+ )+(\\w( += +[^;]+)?(, )*)+;");
 
@@ -318,9 +336,11 @@ public class Project
             }
          }
 
+         // This second if statement checks for
          if ((ln != 0 || ln != this.FileContents.length - 2)
                && classVarMatch.matches()
-               && !this.FileContents[ln].trim().startsWith("for"))
+               && !this.FileContents[ln].trim().startsWith("for")
+               && countLeadingSpaces(this.FileContents[ln]) == 3)
          // Ignore the first & last lines; the first line can't have a declaration, neither can the last, and in the odd
          // case that there is a declaration on the first or last line and there are multiple things up there, one of
          // the other checks will throw an error.
@@ -332,7 +352,8 @@ public class Project
 
             // If the previous line is not a blank or a match and the next line is not a blank or a match either, then
             // we have found a violation of the style rule for blank lines - handle it accordingly and report.
-            if (!(this.FileContents[ln - 1].trim().equals("") || this.FileContents[ln - 1].startsWith("{") || prevClassVarMatch.matches())
+            if (!(this.FileContents[ln - 1].trim().equals("") || this.FileContents[ln - 1].startsWith("{")
+                  || prevClassVarMatch.matches())
                   || !(this.FileContents[ln + 1].trim().equals("") || nextClassVarMatch.matches()))
             {
                ReportError("Variable declarations not properly surrounded by blank lines.", GetLnNum(ln));
@@ -382,13 +403,8 @@ public class Project
 
    private void ReportError(String errortype, int line)
    {
-      AppendToReport("Line " + line + " | Error:  " + errortype);
+      AppendToReport("Line " + String.format("%3d", line) + " | Error:  " + errortype);
       this.NumErrors++;
-   }
-
-   private void DeclareCheckerMethod(String MethodName)
-   {
-      System.out.println("Checking for " + MethodName + " errors...");
    }
 
    private int GetLnNum(int i)

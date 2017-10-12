@@ -53,7 +53,6 @@ public class Diva
          newProject.CheckBlockIndentation();
          newProject.CheckBinaryOpSpaces();
          newProject.CheckBraceAlignment();
-         newProject.CheckVariableCase();
          newProject.CheckMultipleStatementLines();
          newProject.CheckMaxLineLength();
          newProject.CheckNameCase();
